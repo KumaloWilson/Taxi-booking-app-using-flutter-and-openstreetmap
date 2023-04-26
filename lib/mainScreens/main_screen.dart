@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:elrick_trans_app/mainScreens/search_places_screen.dart';
+import 'package:elrick_trans_app/models/drawpolyline.dart';
 import 'package:elrick_trans_app/passenger_assistants/assistance_methods.dart';
 import 'package:elrick_trans_app/widgets/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -36,15 +39,19 @@ class _MainScreenState extends State<MainScreen> {
   StreamSubscription<Position>? _positionStreamSubscription;
   Position? userCurrentPosition;
   var geoLocator = Geolocator();
-
   LocationPermission? _locationPermission;
+
+
 
   bool checkInternet = false;
   bool awaitCoordinates = true;
   bool openNavigationDrawer = true;
   String? userName;
   String? userEmail;
-  
+
+
+
+
   checkIfLoadingCoordinates(){
     if(awaitCoordinates == true) {
       Timer(const Duration(seconds: 30), () async {
@@ -91,8 +98,10 @@ class _MainScreenState extends State<MainScreen> {
       print('ADDRESS NOT FOUND');
     }
 
-    userName = userModelCurrentInfo!.name!;
-    userEmail = userModelCurrentInfo!.email!;
+    setState(() {
+      userName = userModelCurrentInfo!.name!;
+      userEmail = userModelCurrentInfo!.email!;
+    });
 
     // initializeGeoFireListener();
 
@@ -112,6 +121,11 @@ class _MainScreenState extends State<MainScreen> {
         Geolocator.getPositionStream().listen((Position position) {
           setState(() {
             userCurrentPosition = position;
+            polyLineStartingPoint = LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
+
+            if(userDropOffPosition != null){
+              _mapController!.move(LatLng(position.latitude, position.longitude), 16.0);
+            }
           });
         });
 
@@ -124,6 +138,7 @@ class _MainScreenState extends State<MainScreen> {
     _positionStreamSubscription?.cancel();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,6 +194,7 @@ class _MainScreenState extends State<MainScreen> {
                       setState(() {
                         checkInternet = false;
                         checkIfLoadingCoordinates();
+                        locateUserPosition();
                       });
                     },
                     child: Container(
@@ -221,9 +237,46 @@ class _MainScreenState extends State<MainScreen> {
               minZoom: 0,
             ),
             children: [
-              // Layer that adds the map
-             darkTileLayerOptions
+              //Map Theme
+             darkTileLayerOptions,
+
               // Layer that adds points the map
+              MarkerLayer(
+                  markers: [
+                    if (userCurrentPosition != null)
+                      Marker(
+                        point: LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude),
+                        builder: (ctx) => Icon(
+                            Icons.location_on,
+                            size: MediaQuery.of(context).size.height * 0.05,
+                            color: primaryColor
+                        ),
+                      ),
+
+                    if (userDropOffPosition != null)
+                      Marker(
+                        point: LatLng(userDropOffPosition!.latitude, userDropOffPosition!.longitude),
+                        builder: (ctx) => Icon(
+                            Icons.location_on,
+                            size: MediaQuery.of(context).size.height * 0.05,
+                            color: Colors.red
+                        ),
+                      ),
+                  ],
+              ),
+
+              if(userDropOffPosition != null)PolylineLayer(
+                polylineCulling: true,
+                polylines: [
+                  Polyline(
+                    points: routeCoordinates,
+                    color: Colors.blueAccent,
+                    borderColor: Colors.blueAccent,
+                    borderStrokeWidth: 3,
+                    strokeWidth: 3,
+                  ),
+                ],
+              ),
             ],
           ),
 

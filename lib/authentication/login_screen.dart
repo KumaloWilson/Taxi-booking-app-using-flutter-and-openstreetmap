@@ -83,13 +83,13 @@ class _LoginScreenState extends State<LoginScreen>
         {
           currentFirebaseUser = firebaseUser;
           Fluttertoast.showToast(msg: "Login Successful");
-          Navigator.push(context, MaterialPageRoute(builder: (c)=> const MySplashScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> const MySplashScreen()));
         }
         else
         {
           Fluttertoast.showToast(msg: "Oops! email does not exist");
           fAuth.signOut();
-          Navigator.push(context, MaterialPageRoute(builder: (c)=> const MySplashScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> const MySplashScreen()));
         }
       });
     }
@@ -100,13 +100,13 @@ class _LoginScreenState extends State<LoginScreen>
         if (snap.value != null) {
           currentFirebaseUser = firebaseUser;
           Fluttertoast.showToast(msg: "Login Successful");
-          Navigator.push(context,
+          Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (c) => const MySplashScreen()));
         }
         else {
           Fluttertoast.showToast(msg: "Oops! email does not exist");
           fAuth.signOut();
-          Navigator.push(context,
+          Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (c) => const MySplashScreen()));
         }
       });
