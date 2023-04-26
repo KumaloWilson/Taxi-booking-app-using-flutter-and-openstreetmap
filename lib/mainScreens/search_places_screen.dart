@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../global/map_key.dart';
-import '../passenger_assistants/request_assistant.dart';
 import '../models/search_places_data.dart';
 import '../widgets/place_prediction_tile.dart';
 
@@ -34,10 +32,9 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen>
         backgroundColor: Colors.transparent,
         body: Column(
           children: [
-
             //Search Places UI
             Container(
-              height: 180,
+              height: MediaQuery.of(context).size.height * 0.23,
               decoration: const BoxDecoration(
                 color: Colors.grey,
                 boxShadow: [
@@ -53,11 +50,15 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen>
                 ],
               ),
               child: Padding(
-                padding: const EdgeInsets.all(18.0),
+                padding: EdgeInsets.all(
+                  MediaQuery.of(context).size.height * 0.02,
+                ),
                 child: Column(
                   children: [
 
-                    const SizedBox(height: 35.0,),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.03,
+                    ),
 
                     Stack(
                       children: [
@@ -79,12 +80,15 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen>
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         )
                       ],
                     ),
 
-                    const SizedBox(height: 16.0,),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
 
                     Row(
                       children: [
@@ -93,7 +97,10 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen>
                           color: Colors.black,
                         ),
 
-                        const SizedBox(width: 18.0,),
+
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.02,
+                        ),
 
                         Expanded(
                           child: Padding(
@@ -119,10 +126,10 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen>
                                           print(decodedResponse);
                                         }
                                         _options = decodedResponse
-                                            .map((e) => SearchPlacesData(
-                                            displayAddressName: e['display_name'],
-                                            lat: double.parse(e['lat']),
-                                            lon: double.parse(e['lon'])))
+                                            .map((jsonData) => SearchPlacesData(
+                                            displayAddressName: jsonData['display_name'],
+                                            lat: double.parse(jsonData['lat']),
+                                            lon: double.parse(jsonData['lon'])))
                                             .toList();
                                         _options = _options.reversed.toList();
                                         setState(() {});
