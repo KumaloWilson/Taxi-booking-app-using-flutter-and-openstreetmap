@@ -26,7 +26,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
 
   GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
-  double searchLocationContainerHeight = 220;
+  double searchLocationContainerHeight = 240;
   double waitingResponseFromDriverContainerHeight = 0;
   double assignedDriverInfoContainerHeight = 0;
 
@@ -285,8 +285,8 @@ class _MainScreenState extends State<MainScreen> {
                             Icons.add_location_alt_outlined,
                             color: Colors.white,
                           ),
-                          const SizedBox(
-                            width: 10.0,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.027,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -400,7 +400,7 @@ class _MainScreenState extends State<MainScreen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.yellow,
+                          backgroundColor: primaryColor,
                           padding: EdgeInsets.symmetric(
                               horizontal: 50, vertical: 12),
                           shape: RoundedRectangleBorder(
