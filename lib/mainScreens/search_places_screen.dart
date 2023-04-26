@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../global/map_key.dart';
-import '../models/predicted_places.dart';
 import '../passenger_assistants/request_assistant.dart';
+import '../models/search_places_data.dart';
 import '../widgets/place_prediction_tile.dart';
 
 class SearchPlacesScreen extends StatefulWidget
@@ -15,35 +19,8 @@ class SearchPlacesScreen extends StatefulWidget
 
 class _SearchPlacesScreenState extends State<SearchPlacesScreen>
 {
-  List<PredictedPlaces> placesPredictedList = [];
-
-  void findPlaceAutoCompleteSearch(String inputText) async
-  {
-    if(inputText.length > 1)
-      {
-        String urlAutoCompleteSearch = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$inputText&key=$mapkey&components=country:ZW";
-
-        var responseAutoCompleteSearch = await RequestAssistant.receiveRequest(urlAutoCompleteSearch);
-
-        if(responseAutoCompleteSearch == "Some error occurred. Please try again")
-          {
-            return;
-          }
-
-        if(responseAutoCompleteSearch["status"] == "OK")
-          {
-            var placePredictions = responseAutoCompleteSearch["predictions"];
-
-            var placePredictionsList = (placePredictions as List).map((jsonData) => PredictedPlaces.fromJson(jsonData)).toList();
-
-            setState(() {
-              placesPredictedList = placePredictionsList;
-            });
-
-          }
-
-      }
-  }
+  Timer? _debounce;
+  List<SearchPlacesData> _options = <SearchPlacesData>[];
 
   @override
   Widget build(BuildContext context)
@@ -122,9 +99,38 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen>
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextField(
-                              onChanged: (valuetyped)
-                              {
-                               findPlaceAutoCompleteSearch(valuetyped);
+                              onChanged: (String value) async {
+                                if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+                                _debounce =
+                                    Timer(const Duration(milliseconds: 2000), () async {
+                                      if (kDebugMode) {
+                                        print(value);
+                                      }
+                                      var client = http.Client();
+                                      try {
+                                        String url = 'https://nominatim.openstreetmap.org/search?q=$value&format=json&polygon_geojson=1&addressdetails=1';
+                                        if (kDebugMode) {
+                                          print(url);
+                                        }
+                                        var response = await client.post(Uri.parse(url));
+                                        var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as List<dynamic>;
+                                        if (kDebugMode) {
+                                          print(decodedResponse);
+                                        }
+                                        _options = decodedResponse
+                                            .map((e) => SearchPlacesData(
+                                            displayAddressName: e['display_name'],
+                                            lat: double.parse(e['lat']),
+                                            lon: double.parse(e['lon'])))
+                                            .toList();
+                                        _options = _options.reversed.toList();
+                                        setState(() {});
+                                      } finally {
+                                        client.close();
+                                      }
+                                      setState(() {});
+                                    });
 
                               },
                               decoration: const InputDecoration(
@@ -151,18 +157,18 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen>
             ),
 
             //place predictions results
-            (placesPredictedList.length > 0)
+            (_options.isNotEmpty)
                 ? Expanded
                   (
                     child: ListView.separated
                       (
 
-                        itemCount: placesPredictedList.length,
-                        physics: ClampingScrollPhysics(),
+                        itemCount: _options.length,
+                        physics: const ClampingScrollPhysics(),
                         itemBuilder: (context, index)
                         {
                           return PlacePredictionTileDesign(
-                            predictedPlaces: placesPredictedList[index],
+                            predictedPlaces: _options[index],
                           );
                         },
                         separatorBuilder: (BuildContext context, int index)

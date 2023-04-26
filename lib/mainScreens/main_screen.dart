@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:elrick_trans_app/mainScreens/search_places_screen.dart';
 import 'package:elrick_trans_app/passenger_assistants/assistance_methods.dart';
 import 'package:elrick_trans_app/widgets/progress_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -11,7 +9,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-
 import '../global/global.dart';
 import '../infoHandler/app_info.dart';
 import '../widgets/my_drawer.dart';
@@ -51,10 +48,12 @@ class _MainScreenState extends State<MainScreen> {
   checkIfLoadingCoordinates(){
     if(awaitCoordinates == true) {
       Timer(const Duration(seconds: 30), () async {
-        setState(() {
-          checkInternet = true;
-        });
-        print('check your internet');
+        if(awaitCoordinates == true){
+          setState(() {
+            checkInternet = true;
+          });
+          print('check your internet');
+        }
       });
     }
   }
@@ -89,7 +88,7 @@ class _MainScreenState extends State<MainScreen> {
       });
     }
     else{
-      print('ADRESS NOT FOUND');
+      print('ADDRESS NOT FOUND');
     }
 
     userName = userModelCurrentInfo!.name!;
@@ -313,16 +312,16 @@ class _MainScreenState extends State<MainScreen> {
                         ],
                       ),
 
-                      const SizedBox(
-                        height: 15.0,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
                       ),
                       const Divider(
                         height: 1,
                         thickness: 1,
                         color: Colors.white,
                       ),
-                      const SizedBox(
-                        height: 15.0,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
                       ),
 
                       //ToLocation
@@ -349,8 +348,8 @@ class _MainScreenState extends State<MainScreen> {
                               Icons.add_location_alt_outlined,
                               color: Colors.white,
                             ),
-                            const SizedBox(
-                              width: 10.0,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.027,
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -376,16 +375,17 @@ class _MainScreenState extends State<MainScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 15.0,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
                       ),
                       const Divider(
                         height: 1,
                         thickness: 1,
                         color: Colors.white,
                       ),
-                      const SizedBox(
-                        height: 15.0,
+
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
                       ),
 
                       ElevatedButton(
@@ -402,7 +402,9 @@ class _MainScreenState extends State<MainScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 12),
+                              horizontal: MediaQuery.of(context).size.width * 0.15,
+                              vertical: MediaQuery.of(context).size.height * 0.015,
+                          ),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25)),
                         ),
@@ -420,8 +422,6 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           ),
-
-
         ],
       ),
     );

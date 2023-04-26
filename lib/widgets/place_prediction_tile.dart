@@ -1,3 +1,4 @@
+import 'package:elrick_trans_app/models/search_places_data.dart';
 import 'package:elrick_trans_app/widgets/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,12 +6,11 @@ import '../global/global.dart';
 import '../global/map_key.dart';
 import '../infoHandler/app_info.dart';
 import '../models/directions.dart';
-import '../models/predicted_places.dart';
 import '../passenger_assistants/request_assistant.dart';
 
 class PlacePredictionTileDesign extends StatefulWidget
 {
-  final PredictedPlaces? predictedPlaces;
+  final SearchPlacesData? predictedPlaces;
 
   PlacePredictionTileDesign({this.predictedPlaces});
 
@@ -50,6 +50,7 @@ class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
 
           setState(() {
             userDropOffAddress = directions.locationName!;
+            print("USER DROPOFF LOCATION $userDropOffAddress");
           });
 
           Navigator.pop(context, "obtainedDropoff");
@@ -58,43 +59,54 @@ class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed:()
+    return GestureDetector(
+        onTap:()
             {
-              getPlaceDirectionDetails(widget.predictedPlaces!.place_id, context);
+              getPlaceDirectionDetails(widget.predictedPlaces!.displayAddressName, context);
             },
-      style: ElevatedButton.styleFrom(
-        primary: Colors.black45,
-      ),
 
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Row(
-          children: [
-            Icon(
-              Icons.add_location,
-              color: Colors.black,
-            ),
-            const SizedBox(width: 14.0,),
 
-            Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 8.0,),
-                    Text(
-                      widget.predictedPlaces!.main_text!,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.white54
+
+      child: Container(
+        color: Colors.black45,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.02,
+              vertical: MediaQuery.of(context).size.height * 0.009
+          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.add_location,
+                color: Colors.black,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.012,
+              ),
+
+              Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
                       ),
-                    ),
-                    const SizedBox(height: 8.0,),
-                  ],
-                ),
-            ),
-          ],
+                      Text(
+                        widget.predictedPlaces!.displayAddressName,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: primaryColor
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
+                      ),
+                    ],
+                  ),
+              ),
+            ],
+          ),
         ),
       ),
     );
