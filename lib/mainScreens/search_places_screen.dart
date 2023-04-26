@@ -1,9 +1,8 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../models/search_places_data.dart';
+
+import '../global/map_key.dart';
+import '../models/predicted_places.dart';
+import '../passenger_assistants/request_assistant.dart';
 import '../widgets/place_prediction_tile.dart';
 
 class SearchPlacesScreen extends StatefulWidget
@@ -17,8 +16,35 @@ class SearchPlacesScreen extends StatefulWidget
 
 class _SearchPlacesScreenState extends State<SearchPlacesScreen>
 {
-  Timer? _debounce;
-  List<SearchPlacesData> _options = <SearchPlacesData>[];
+  List<PredictedPlaces> placesPredictedList = [];
+
+  void findPlaceAutoCompleSearch(String inputText) async
+  {
+    if(inputText.length > 1)
+    {
+      String urlAutoCompleteSearch = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$inputText&key=$mapkey&components=country:ZW";
+
+      var responseAutoCompleteSearch = await RequestAssistant.receiveRequest(urlAutoCompleteSearch);
+
+      if(responseAutoCompleteSearch == "Some error occurred. Please try again")
+      {
+        return;
+      }
+
+      if(responseAutoCompleteSearch["status"] == "OK")
+      {
+        var placePredictions = responseAutoCompleteSearch["predictions"];
+
+        var placePredictionsList = (placePredictions as List).map((jsonData) => PredictedPlaces.fromJson(jsonData)).toList();
+
+        setState(() {
+          placesPredictedList = placePredictionsList;
+        });
+
+      }
+
+    }
+  }
 
   @override
   Widget build(BuildContext context)
@@ -32,33 +58,30 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen>
         backgroundColor: Colors.transparent,
         body: Column(
           children: [
+
             //Search Places UI
             Container(
-              height: MediaQuery.of(context).size.height * 0.23,
+              height: 180,
               decoration: const BoxDecoration(
                 color: Colors.grey,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black54,
-                    blurRadius: 8,
-                    spreadRadius: 0.5,
-                    offset: Offset(
-                      0.7,
-                      0.7,
-                    )
+                      color: Colors.black54,
+                      blurRadius: 8,
+                      spreadRadius: 0.5,
+                      offset: Offset(
+                        0.7,
+                        0.7,
+                      )
                   ),
                 ],
               ),
               child: Padding(
-                padding: EdgeInsets.all(
-                  MediaQuery.of(context).size.height * 0.02,
-                ),
+                padding: const EdgeInsets.all(18.0),
                 child: Column(
                   children: [
 
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.03,
-                    ),
+                    const SizedBox(height: 35.0,),
 
                     Stack(
                       children: [
@@ -80,15 +103,12 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen>
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
-                            textAlign: TextAlign.center,
                           ),
                         )
                       ],
                     ),
 
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
-                    ),
+                    const SizedBox(height: 16.0,),
 
                     Row(
                       children: [
@@ -97,47 +117,15 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen>
                           color: Colors.black,
                         ),
 
-
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.02,
-                        ),
+                        const SizedBox(width: 18.0,),
 
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextField(
-                              onChanged: (String value) async {
-                                if (_debounce?.isActive ?? false) _debounce?.cancel();
-
-                                _debounce =
-                                    Timer(const Duration(milliseconds: 2000), () async {
-                                      if (kDebugMode) {
-                                        print(value);
-                                      }
-                                      var client = http.Client();
-                                      try {
-                                        String url = 'https://nominatim.openstreetmap.org/search?q=$value&format=json&polygon_geojson=1&addressdetails=1';
-                                        if (kDebugMode) {
-                                          print(url);
-                                        }
-                                        var response = await client.post(Uri.parse(url));
-                                        var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as List<dynamic>;
-                                        if (kDebugMode) {
-                                          print(decodedResponse);
-                                        }
-                                        _options = decodedResponse
-                                            .map((jsonData) => SearchPlacesData(
-                                            displayAddressName: jsonData['display_name'],
-                                            lat: double.parse(jsonData['lat']),
-                                            lon: double.parse(jsonData['lon'])))
-                                            .toList();
-                                        _options = _options.reversed.toList();
-                                        setState(() {});
-                                      } finally {
-                                        client.close();
-                                      }
-                                      setState(() {});
-                                    });
+                              onChanged: (valuetyped)
+                              {
+                                findPlaceAutoCompleSearch(valuetyped);
 
                               },
                               decoration: const InputDecoration(
@@ -164,31 +152,31 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen>
             ),
 
             //place predictions results
-            (_options.isNotEmpty)
+            (placesPredictedList.length > 0)
                 ? Expanded
-                  (
-                    child: ListView.separated
-                      (
+              (
+              child: ListView.separated
+                (
 
-                        itemCount: _options.length,
-                        physics: const ClampingScrollPhysics(),
-                        itemBuilder: (context, index)
-                        {
-                          return PlacePredictionTileDesign(
-                            predictedPlaces: _options[index],
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index)
-                        {
-                          return const Divider(
-                            height: 1,
-                            color: Colors.black,
-                            thickness: 1,
-                          );
-                        },
+                itemCount: placesPredictedList.length,
+                physics: ClampingScrollPhysics(),
+                itemBuilder: (context, index)
+                {
+                  return PlacePredictionTileDesign(
+                    predictedPlaces: placesPredictedList[index],
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index)
+                {
+                  return const Divider(
+                    height: 1,
+                    color: Colors.black,
+                    thickness: 1,
+                  );
+                },
 
-                    ),
-                  )
+              ),
+            )
                 : Container(),
           ],
         ),
