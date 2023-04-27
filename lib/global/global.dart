@@ -1,7 +1,11 @@
+import 'dart:async';
 import 'dart:ui';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import '../models/driver_data.dart';
 import '../models/direction_details_info.dart';
 import '../models/user_model.dart';
 
@@ -19,10 +23,21 @@ String driverCarDetails = "";
 String driverName = "";
 String driverPhone = "";
 double countRatingStars = 0.0;
-String titleStarsRating = "";
+
 
 
 //Driver Global Variables
+StreamSubscription<Position>? streamSubscriptionPosition;
+StreamSubscription<Position>? streamSubscriptionDriverLivePosition;
+AssetsAudioPlayer audioPlayer = AssetsAudioPlayer();
+Position? driverCurrentPosition;
+DriverData onlineDriverData = DriverData();
+String? driverVehicleType = "";
+bool isDriverActive = false;
+String statusText = "Now Offline";
+Color buttonColor = primaryColor;
+
+
 
 //Overall Global Variables
 enum UserType{passenger, driver}
@@ -32,8 +47,9 @@ bool driverMode = false;
 bool passengerMode = false;
 bool isAssistantActive = false;
 bool isDestinationFound = false;
-bool isCarDetailsSet = false;
+bool isCarDetailsProvided = false;
 Color primaryColor = const Color.fromARGB(255, 220, 171, 27);
+String titleStarsRating = "";
 
 List<LatLng> routeCoordinates = [];
 late LatLng polyLineStartingPoint;

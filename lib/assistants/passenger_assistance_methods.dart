@@ -1,18 +1,17 @@
 import 'dart:convert';
-import 'package:elrick_trans_app/passenger_assistants/request_assistant.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-
 import '../global/global.dart';
 import '../global/map_key.dart';
-import '../infoHandler/app_info.dart';
+import '../infoHandler/info_handler.dart';
 import '../models/direction_details_info.dart';
 import '../models/directions.dart';
-import '../models/trips_history_model.dart';
+import '../models/passenger_trips_history_model.dart';
 import '../models/user_model.dart';
+import 'driver_request_assistant.dart';
 
 class PassengerAssistantMethods
 {
@@ -184,12 +183,12 @@ class PassengerAssistantMethods
           .once()
           .then((snap)
       {
-        var eachTripHistory = TripsHistoryModel.fromSnapshot(snap.snapshot);
+        var eachTripHistory = PassengerTripsHistoryModel.fromSnapshot(snap.snapshot);
 
         if((snap.snapshot.value as Map)["status"] == "ended")
         {
           //update-add each history to OverAllTrips History Data List
-          Provider.of<AppInfo>(context, listen: false).updateOverAllTripsHistoryInformation(eachTripHistory);
+          Provider.of<AppInfo>(context, listen: false).updateOverAllPassengerTripsHistoryInformation(eachTripHistory);
         }
       });
     }

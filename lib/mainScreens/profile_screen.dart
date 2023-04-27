@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../global/global.dart';
-import '../widgets/info_design_ui.dart';
+import '../widgets/passenger_info_design_ui.dart';
 
 
 class ProfileScreen extends StatefulWidget

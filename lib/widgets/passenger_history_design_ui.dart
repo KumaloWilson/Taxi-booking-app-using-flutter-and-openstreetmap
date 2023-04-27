@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../models/trips_history_model.dart';
+import '../models/passenger_trips_history_model.dart';
 
 class HistoryDesignUIWidget extends StatefulWidget
 {
-  TripsHistoryModel? tripsHistoryModel;
+  PassengerTripsHistoryModel? tripsHistoryModel;
 
   HistoryDesignUIWidget({this.tripsHistoryModel});
 

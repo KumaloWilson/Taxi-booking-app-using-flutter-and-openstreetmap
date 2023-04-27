@@ -1,6 +1,6 @@
 // import 'dart:async';
 // import 'package:elrick_trans_app/mainScreens/search_places_screen.dart';
-// import 'package:elrick_trans_app/passenger_assistants/assistance_methods.dart';
+// import 'package:elrick_trans_app/passenger_assistants/driver_assistance_methods.dart';
 // import 'package:elrick_trans_app/widgets/progress_dialog.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
@@ -10,7 +10,7 @@
 // import 'package:latlong2/latlong.dart';
 // import 'package:provider/provider.dart';
 // import '../global/global.dart';
-// import '../infoHandler/app_info.dart';
+// import '../infoHandler/passenger_app_info_handler.dart';
 // import '../widgets/my_drawer.dart';
 //
 // class MainScreen extends StatefulWidget {

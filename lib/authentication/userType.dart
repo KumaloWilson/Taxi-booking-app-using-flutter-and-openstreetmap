@@ -82,26 +82,15 @@ class _selectUserTypeState extends State<selectUserType> {
             image: AssetImage("images/Absolute_BG.png"), fit: BoxFit.cover),
       ),
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: const Center(
-              child: Text(
-               'Elrick Trans',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-          ),
-        ), //AppBar
         backgroundColor: Colors.transparent,
         body: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(
+              MediaQuery.of(context).size.height * 0.015
+          ),
           child: Column(
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
+                height: MediaQuery.of(context).size.height * 0.1,
               ),
               const Center(
                 child: Text(

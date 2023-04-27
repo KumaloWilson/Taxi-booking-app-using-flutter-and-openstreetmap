@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import '../global/global.dart';
-import '../infoHandler/app_info.dart';
+import '../infoHandler/info_handler.dart';
 import '../models/directions.dart';
 import '../models/drawpolyline.dart';
 import '../models/predicted_places.dart';
-import '../passenger_assistants/request_assistant.dart';
+import '../assistants/request_assistant.dart';
 
 class PlacePredictionTileDesign extends StatefulWidget
 {

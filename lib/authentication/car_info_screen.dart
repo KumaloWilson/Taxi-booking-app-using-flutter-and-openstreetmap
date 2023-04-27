@@ -33,33 +33,45 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
     DatabaseReference driversRef = FirebaseDatabase.instance.ref().child("drivers");
     driversRef.child(currentFirebaseUser!.uid).child("car_details").set(driverCarInfoMap);
 
+
+    setCarDetailsStatus();
+
     Fluttertoast.showToast(msg: "Congratulations you're now a driver @ Elrik Trans");
+
   }
 
-  void getCarDetails() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    isCarDetailsSet = (prefs.getBool('car') ?? false);
-
-    if (isCarDetailsSet == false) {
-      print('PLEASE SET YOUR CAR DETAILS');
-      Navigator.push(context, MaterialPageRoute(builder: (c) => CarInfoScreen()));
-    }
-    else{
-      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
-      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
-      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
-      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
-      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
-    }
-  }
-
-  void setCarDetails() async{
+  void setCarDetailsStatus() async{
     SharedPreferences signPrefs = await SharedPreferences.getInstance();
     signPrefs.setBool('car', true);
 
-    getCarDetails();
+    getCarDetailsStatus();
   }
 
+  void getCarDetailsStatus() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isCarDetailsProvided = (prefs.getBool('car') ?? false);
+
+    if(isCarDetailsProvided == true){
+      print("CAR DETAILS ARE PROVIDED NOW PROCEEDING TO SPLASHSCREEN");
+      print("CAR DETAILS ARE PROVIDED NOW PROCEEDING TO SPLASHSCREEN");
+      print("CAR DETAILS ARE PROVIDED NOW PROCEEDING TO SPLASHSCREEN");
+      print("CAR DETAILS ARE PROVIDED NOW PROCEEDING TO SPLASHSCREEN");
+
+      proceedToSplashOnBoardingScreensIfUserModeIsSet();
+    }
+    else{
+      print('PLEASE ENTER YOUR CAR DETAILS');
+      print('PLEASE ENTER YOUR CAR DETAILS');
+      print('PLEASE ENTER YOUR CAR DETAILS');
+      print('PLEASE ENTER YOUR CAR DETAILS');
+    }
+  }
+
+  void proceedToSplashOnBoardingScreensIfUserModeIsSet() async{
+     await Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+  }
+
+  @override
   Widget build(BuildContext context)
   {
     return Container(
@@ -71,26 +83,19 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(
+                MediaQuery.of(context).size.height * 0.02
+            ),
             child: Column(
               children: [
 
-                const SizedBox(height: 10,),
-
                 CircleAvatar(
-                  radius: 111,
-                  child: ClipOval(
-                    child:  Image.asset("images/Elrik.png",
-                      height: 400,
-                    ),
-                  ),
+                  backgroundImage: const AssetImage('images/Elrik.png'),
+                  radius: MediaQuery.of(context).size.height * 0.15,
                 ),
 
-
-                const SizedBox(height: 40,),
-
                 const Text(
-                  "Enter Your Car Details",
+                  "Enter Car Details",
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.black,
@@ -98,7 +103,9 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 20,),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
 
                 TextField(
                   controller: carModelTextEditingController,
@@ -119,8 +126,10 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 15,),
 
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.018,
+                ),
                 TextField(
                   controller: carNumberTextEditingController,
                   style: const TextStyle(
@@ -140,8 +149,9 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 15,),
-
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.018,
+                ),
                 TextField(
                   controller: carColorTextEditingController,
                   style: const TextStyle(
@@ -160,9 +170,9 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
 
                   ),
                 ),
-
-                const SizedBox(height: 20,),
-
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.008,
+                ),
                 DropdownButton<String>(
                   dropdownColor: const Color.fromARGB(255, 3, 152, 158),
                   hint: const Text(
@@ -203,7 +213,9 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
 
 
 
-                const SizedBox(height: 20,),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.008,
+                ),
 
                 ElevatedButton(
                   onPressed: ()
@@ -219,13 +231,14 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
 
 
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.black,
-                    padding: EdgeInsets.symmetric(horizontal: 110, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25)
+                    backgroundColor: Colors.black,
+                    shape: const StadiumBorder(),
+                    side: BorderSide(
+                        color: primaryColor,
+                        width: 2
                     ),
+                    minimumSize: const Size.fromHeight(50),
                   ),
-
                   child: const Text(
                     "Register Vehicle",
                     style: TextStyle(
@@ -240,13 +253,6 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
           ),
         ),
       ),
-
-
     );
-
-
-
-
-
   }
 }

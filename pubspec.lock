@@ -33,6 +33,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.0"
+  assets_audio_player:
+    dependency: "direct main"
+    description:
+      name: assets_audio_player
+      sha256: dcea8cd9c11cd9c34586f2446bfcdf099362159c56f97517ba941ac151974ea9
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.6"
+  assets_audio_player_web:
+    dependency: transitive
+    description:
+      name: assets_audio_player_web
+      sha256: "4575ec40033d818ff022d48f7d46e24c01bc632bd1cd36a4f8b58b38e9aa4a81"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.6"
   async:
     dependency: transitive
     description:
@@ -464,6 +480,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.2"
+  path_provider:
+    dependency: transitive
+    description:
+      name: path_provider
+      sha256: c7edf82217d4b2952b2129a61d3ad60f1075b9299e629e149a8d2e39c2e6aad4
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.14"
+  path_provider_android:
+    dependency: transitive
+    description:
+      name: path_provider_android
+      sha256: "3e58242edc02624f2c712e3f8bea88e0e341c4ae1abd3a6ff661318a3aefd829"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.26"
+  path_provider_foundation:
+    dependency: transitive
+    description:
+      name: path_provider_foundation
+      sha256: ad4c4d011830462633f03eb34445a45345673dfd4faf1ab0b4735fbd93b19183
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.2"
   path_provider_linux:
     dependency: transitive
     description:
@@ -600,6 +640,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.27.7"
+  salomon_bottom_bar:
+    dependency: "direct main"
+    description:
+      name: salomon_bottom_bar
+      sha256: e20abf2e449749432223a8b4e6647c212eef6c2b638e0ed8cc92eff9529c2b48
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.2"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -749,6 +805,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
   vector_math:
     dependency: transitive
     description:

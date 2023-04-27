@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 import '../global/global.dart';
-import '../passenger_assistants/assistance_methods.dart';
+import '../assistants/passenger_assistance_methods.dart';
 
 
 class SelectNearestActiveDriversScreen extends StatefulWidget

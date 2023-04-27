@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'authentication/userType.dart';
-import 'infoHandler/app_info.dart';
+import 'infoHandler/info_handler.dart';
 
 
 bool showSelectUserTypeAndOnBoardingScreenPrefs = true;
@@ -21,7 +21,7 @@ void main() async {
       child: ChangeNotifierProvider(
         create: (context) => AppInfo(),
         child: MaterialApp(
-          title: 'Drivers App',
+          title: 'ElrickTran',
           theme: ThemeData(
             primarySwatch: Colors.blue,
             useMaterial3: true,

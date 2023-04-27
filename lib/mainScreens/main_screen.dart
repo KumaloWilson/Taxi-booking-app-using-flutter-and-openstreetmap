@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:elrick_trans_app/mainScreens/search_places_screen.dart';
 import 'package:elrick_trans_app/models/drawpolyline.dart';
-import 'package:elrick_trans_app/passenger_assistants/assistance_methods.dart';
+import 'package:elrick_trans_app/assistants/passenger_assistance_methods.dart';
 import 'package:elrick_trans_app/widgets/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +13,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import '../global/global.dart';
-import '../infoHandler/app_info.dart';
+import '../infoHandler/info_handler.dart';
 import '../widgets/blinker.dart';
 import '../widgets/my_drawer.dart';
 
@@ -189,7 +189,7 @@ class _MainScreenState extends State<MainScreen> {
                 children: [
                   Icon(
                     Icons.wifi_off,
-                    size: MediaQuery.of(context).size.width * 0.25,
+                    size: MediaQuery.of(context).size.height * 0.099,
                     color: primaryColor,
                   ),
                   const Text(
@@ -298,7 +298,7 @@ class _MainScreenState extends State<MainScreen> {
 
           //customer hamburger button for drawer
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.07,
+            top: MediaQuery.of(context).size.height * 0.09,
             left: MediaQuery.of(context).size.width * 0.05,
             child: GestureDetector(
               onTap: () {
@@ -311,14 +311,14 @@ class _MainScreenState extends State<MainScreen> {
               },
               child: CircleAvatar(
                 backgroundColor: Colors.white,
-                radius: MediaQuery.of(context).size.height * 0.02,
+                radius: MediaQuery.of(context).size.width * 0.06,
                 child: Icon(
                   openNavigationDrawer
                       ? Icons.menu
                       : Icons.close,
 
                   color: Colors.black,
-                  size: MediaQuery.of(context).size.height * 0.03,
+                  size: MediaQuery.of(context).size.width * 0.1,
                 ),
               ),
             ),

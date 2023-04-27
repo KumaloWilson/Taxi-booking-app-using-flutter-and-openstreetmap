@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/predicted_places.dart';
-import '../passenger_assistants/request_assistant.dart';
+import '../assistants/request_assistant.dart';
 import '../widgets/place_prediction_tile.dart';
 
 class SearchPlacesScreen extends StatefulWidget {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
 import '../infoHandler/info_handler.dart';
-import '../widgets/passenger_history_design_ui.dart';
+import '../widgets/driver_history_design_ui.dart';
+
 
 
 class TripsHistoryScreen extends StatefulWidget
@@ -50,17 +52,15 @@ class _TripsHistoryScreenState extends State<TripsHistoryScreen>
               return Card(
                 color: Colors.white54,
                 child: HistoryDesignUIWidget(
-                  tripsHistoryModel: Provider.of<AppInfo>(context, listen: false).allPassengersTripsHistoryInformationList[i],
+                  tripsHistoryModel: Provider.of<AppInfo>(context, listen: false).allDriverTripsHistoryInformationList[i],
                 ),
               );
             },
-            itemCount: Provider.of<AppInfo>(context, listen: false).allPassengersTripsHistoryInformationList.length,
+            itemCount: Provider.of<AppInfo>(context, listen: false).allDriverTripsHistoryInformationList.length,
             physics: const ClampingScrollPhysics(),
             shrinkWrap: true,
           ),
-        )
-
-
+        ),
     );
 
   }
