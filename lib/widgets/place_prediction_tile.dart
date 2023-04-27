@@ -28,8 +28,7 @@ class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
       ),
     );
 
-    String placeDirectionDetailsUrl =
-        "https://nominatim.openstreetmap.org/details.php?osmtype=R&place_id=$placeId&format=json";
+    String placeDirectionDetailsUrl = "https://nominatim.openstreetmap.org/details.php?osmtype=R&place_id=$placeId&format=json";
 
     var responseApi = await RequestAssistant.receiveRequest(placeDirectionDetailsUrl);
 
@@ -68,7 +67,7 @@ class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
       setState(() {
         userDropOffAddress = directions.locationName!;
         userDropOffPosition = LatLng(directions.locationLatitude!.toDouble(), directions.locationLongitude!.toDouble());
-
+        isDestinationFound = true;
       });
 
       Navigator.pop(context, "obtainedDropoff");

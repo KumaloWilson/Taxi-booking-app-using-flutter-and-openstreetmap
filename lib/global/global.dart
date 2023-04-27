@@ -31,6 +31,7 @@ String? asUser;
 bool driverMode = false;
 bool passengerMode = false;
 bool isAssistantActive = false;
+bool isDestinationFound = false;
 Color primaryColor = const Color.fromARGB(255, 220, 171, 27);
 
 List<LatLng> routeCoordinates = [];

@@ -14,6 +14,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import '../global/global.dart';
 import '../infoHandler/app_info.dart';
+import '../widgets/blinker.dart';
 import '../widgets/my_drawer.dart';
 
 class MainScreen extends StatefulWidget {
@@ -132,6 +133,21 @@ class _MainScreenState extends State<MainScreen> {
     checkIfLocationPermissionAllowed();
     checkIfLoadingCoordinates();
   }
+
+  Widget buildBlinkingMarker() {
+    return userCurrentPosition != null ? BlinkingMarker(
+      point: LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude),
+      color: Colors.red,
+      size: 30,
+      duration: const Duration(milliseconds: 500),
+      child: const Icon(
+          Icons.location_on,
+          size: 30,
+          color: Colors.red
+      ),
+    ) : Container();
+  }
+
 
   @override
   void dispose() {
@@ -295,21 +311,22 @@ class _MainScreenState extends State<MainScreen> {
               },
               child: CircleAvatar(
                 backgroundColor: Colors.white,
-                radius: MediaQuery.of(context).size.height * 0.03,
+                radius: MediaQuery.of(context).size.height * 0.02,
                 child: Icon(
                   openNavigationDrawer
                       ? Icons.menu
                       : Icons.close,
 
                   color: Colors.black,
-                  size: MediaQuery.of(context).size.height * 0.05,
+                  size: MediaQuery.of(context).size.height * 0.03,
                 ),
               ),
             ),
           ),
 
           //UI for searching Location
-          Positioned(
+          isDestinationFound
+          ?  Positioned(
             bottom: MediaQuery.of(context).size.height * 0.01,
             left: MediaQuery.of(context).size.height * 0.015,
             right: MediaQuery.of(context).size.height * 0.015,
@@ -474,6 +491,49 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
+          )
+          :  Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchPlacesScreen()),
+                );
+              },
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.065,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 1,
+                        blurRadius: 7,
+                        offset: const Offset(0, 3))
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:  <Widget>[
+                    const Icon(Icons.search),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.02
+                    ),
+                    const Text("Search for pickup location"),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          if(isDestinationFound == false)Positioned(
+            bottom: MediaQuery.of(context).size.height * 0.05,
+            left: 0,
+            right: 0,
+            child: buildBlinkingMarker(),
           ),
         ],
       ),
