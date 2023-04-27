@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:elrick_trans_app/authentication/car_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../authentication/login_screen.dart';
@@ -29,6 +30,24 @@ class _MySplashScreenState extends State<MySplashScreen> {
         }
       });
     });
+  }
+
+
+  void getCarDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isCarDetailsSet = (prefs.getBool('car') ?? false);
+
+    if (isCarDetailsSet == false) {
+      print('PLEASE SET YOUR CAR DETAILS');
+      Navigator.push(context, MaterialPageRoute(builder: (c) => CarInfoScreen()));
+    }
+    else{
+      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
+      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
+      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
+      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
+      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
+    }
   }
 
   void getUserMode() async{
@@ -80,7 +99,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
         currentFirebaseUser = fAuth.currentUser;
 
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (c) => MainScreen()));
+            context, MaterialPageRoute(builder: (c) => const MainScreen()));
 
 
       }else if (fAuth.currentUser != null && userType == UserType.driver) {

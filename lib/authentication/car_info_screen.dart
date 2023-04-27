@@ -2,6 +2,7 @@ import 'package:elrick_trans_app/splashScreen/splash_screen.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../global/global.dart';
 
@@ -12,8 +13,6 @@ class CarInfoScreen extends StatefulWidget {
 }
 
 class _CarInfoScreenState extends State<CarInfoScreen> {
-  @override
-
   TextEditingController carModelTextEditingController = TextEditingController();
   TextEditingController carNumberTextEditingController = TextEditingController();
   TextEditingController carColorTextEditingController = TextEditingController();
@@ -35,7 +34,30 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
     driversRef.child(currentFirebaseUser!.uid).child("car_details").set(driverCarInfoMap);
 
     Fluttertoast.showToast(msg: "Congratulations you're now a driver @ Elrik Trans");
-    Navigator.push(context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+  }
+
+  void getCarDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isCarDetailsSet = (prefs.getBool('car') ?? false);
+
+    if (isCarDetailsSet == false) {
+      print('PLEASE SET YOUR CAR DETAILS');
+      Navigator.push(context, MaterialPageRoute(builder: (c) => CarInfoScreen()));
+    }
+    else{
+      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
+      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
+      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
+      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
+      print('CAR DETAILS ARE SET NOW PROCEEDING TO NEXT SCREEN');
+    }
+  }
+
+  void setCarDetails() async{
+    SharedPreferences signPrefs = await SharedPreferences.getInstance();
+    signPrefs.setBool('car', true);
+
+    getCarDetails();
   }
 
   Widget build(BuildContext context)
@@ -56,13 +78,12 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
                 const SizedBox(height: 10,),
 
                 CircleAvatar(
+                  radius: 111,
                   child: ClipOval(
                     child:  Image.asset("images/Elrik.png",
                       height: 400,
                     ),
                   ),
-
-                  radius: 111,
                 ),
 
 
@@ -142,10 +163,10 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
 
                 const SizedBox(height: 20,),
 
-                DropdownButton(
-                  dropdownColor: Colors.grey,
+                DropdownButton<String>(
+                  dropdownColor: const Color.fromARGB(255, 3, 152, 158),
                   hint: const Text(
-                    "Please choose Car Type",
+                    "Please your avatar",
                     style: TextStyle(
                         fontSize: 14.0,
                         color: Colors.black
@@ -160,15 +181,24 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
                   },
                   items: carTypeList.map((car){
                     return DropdownMenuItem(
-                      child: Text(
-                        car,
-                        style: const TextStyle(
-                            color: Colors.black
-                        ),
-                      ),
                       value: car,
+                      child: Row(
+                        children: [
+                          Image.asset("images/$car.png"),
+                          Text(
+                            car,
+                            style: const TextStyle(
+                                color: Colors.white
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   }).toList(),
+                  isExpanded: true, //make true to take width of parent widget
+                  underline: Container(), //empty line
+                  style: const TextStyle(fontSize: 18, color: Colors.white),
+                  iconEnabledColor: Colors.white,
                 ),
 
 
