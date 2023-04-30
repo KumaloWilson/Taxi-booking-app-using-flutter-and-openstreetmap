@@ -16,7 +16,7 @@ UserModel? userModelCurrentInfo;
 List dList = []; // driverKeyInfo List
 DirectionDetailsInfo? tripDirectionDetailsInfo;
 String? chosenDriverId = "";
-String cloudMessagingServerToken = "key=AAAAhShY2gI:APA91bFw5Beq15NE2QUOY4e375j0c3yJLgsjP-0FYRR0G_hriOlJzONfnh4voAVMeLG-nlEAmOw07znZtWP9ng_PxMktVszjaanMbD-dRYkZgMWQBuWrOe_lllrNsWD43inyPHvpFbqZ";
+String cloudMessagingServerToken = "key=AAAAwfCH6HE:APA91bFNHn9YlqNeg3hYULNmi2yWmc5UeSE6sk0cBqZQeb3PPQwEghZEDeYaYjxm57zbyI5Ffimy0O3uQdd0AuKFrvIPlWldG9XA9tdFq9MwiZf2_3gb6juxetKvTS-LmXsnrp9QlQja";
 LatLng? userDropOffPosition;
 String userDropOffAddress = "";
 String driverCarDetails = "";
@@ -34,7 +34,7 @@ Position? driverCurrentPosition;
 DriverData onlineDriverData = DriverData();
 String? driverVehicleType = "";
 bool isDriverActive = false;
-String statusText = "Now Offline";
+String statusText = "Offline";
 Color buttonColor = primaryColor;
 
 

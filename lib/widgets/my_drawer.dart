@@ -30,7 +30,7 @@ class _MyDrawerState extends State<MyDrawer>
           //drawer header
           Container(
             color: Colors.black,
-            height: MediaQuery.of(context).size.height * 0.29,
+            height: MediaQuery.of(context).size.height * 0.32,
             child: DrawerHeader(
               decoration: const BoxDecoration(color:Colors.black),
               child: Column(

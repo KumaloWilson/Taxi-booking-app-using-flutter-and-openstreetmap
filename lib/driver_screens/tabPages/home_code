@@ -286,8 +286,5 @@ class _HomeTabPageState extends State<HomeTabPage>
     {
       SystemNavigator.pop();
     });
-
-
-
   }
 }

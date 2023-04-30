@@ -54,7 +54,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_map: ^3.1.0
   assets_audio_player: ^3.0.6
-  salomon_bottom_bar: ^3.3.2
+  floating_frosted_bottom_bar: ^0.0.1
+
 
 dev_dependencies:
   flutter_test:

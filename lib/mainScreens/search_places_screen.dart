@@ -55,7 +55,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
 
             //Search Places UI
             Container(
-              height: MediaQuery.of(context).size.height * 0.22,
+              height: MediaQuery.of(context).size.height * 0.2,
               decoration: const BoxDecoration(
                 color: Colors.grey,
                 boxShadow: [
@@ -71,39 +71,14 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
                 ],
               ),
               child: Padding(
-                padding: EdgeInsets.all(
-                  MediaQuery.of(context).size.height * 0.02,
+                padding: EdgeInsets.symmetric(
+                  horizontal : MediaQuery.of(context).size.height * 0.02,
                 ),
                 child: Column(
                   children: [
 
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-
-                    Stack(
-                      children: [
-                        GestureDetector(
-                          onTap: ()
-                          {
-                            Navigator.pop(context);
-                          },
-                          child: const Icon(
-                            Icons.arrow_back_ios_new,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const Center(
-                          child: Text(
-                            "Search & Set DropOff Location",
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
-                      ],
+                      height: MediaQuery.of(context).size.height * 0.07,
                     ),
 
                     Row(

@@ -92,12 +92,12 @@ class PushNotificationSystem
       }
       else
       {
-        Fluttertoast.showToast(msg: "This Ride Request Id do not exists.");
+        Fluttertoast.showToast(msg: "This Ride Request Id does not exist.");
       }
     });
   }
 
-  Future generatingAndGetToken() async
+  Future <void> generatingAndGetToken() async
   {
     String? registrationToken = await messaging.getToken();
     print("FCM Registration Token: ");

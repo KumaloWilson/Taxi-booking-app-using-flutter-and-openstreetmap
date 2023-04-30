@@ -17,20 +17,21 @@ import 'driver_request_assistant.dart';
 
 class DriverAssistantMethods
 {
-  static Future<String> searchAddressForGeographicCoOrdinates(Position position, context) async
+  //decode userCurrentAddress
+  static Future<String> searchAddressForGeographicCoOrdinates(Position myPosition, context) async
   {
-    String apiUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&key=$mapkey";
-    String humanReadableAddress="";
+    String apiUrl ='https://nominatim.openstreetmap.org/reverse?format=json&lat=${myPosition.latitude}&lon=${myPosition.longitude}&zoom=18&addressdetails=1';
+    String humanReadableAddress = "";
 
     var requestResponse = await RequestAssistant.receiveRequest(apiUrl);
 
     if(requestResponse != "Error Occurred, Failed. No Response.")
     {
-      humanReadableAddress = requestResponse["results"][0]["formatted_address"];
+      humanReadableAddress = requestResponse['display_name'];
 
       Directions userPickUpAddress = Directions();
-      userPickUpAddress.locationLatitude = position.latitude;
-      userPickUpAddress.locationLongitude = position.longitude;
+      userPickUpAddress.locationLatitude = myPosition.latitude;
+      userPickUpAddress.locationLongitude = myPosition.longitude;
       userPickUpAddress.locationName = humanReadableAddress;
 
       Provider.of<AppInfo>(context, listen: false).updatePickUpLocationAddress(userPickUpAddress);
@@ -38,6 +39,7 @@ class DriverAssistantMethods
 
     return humanReadableAddress;
   }
+
 
   static Future<DirectionDetailsInfo?> obtainOriginToDestinationDirectionDetails(LatLng originPosition, LatLng destinationPosition) async
   {

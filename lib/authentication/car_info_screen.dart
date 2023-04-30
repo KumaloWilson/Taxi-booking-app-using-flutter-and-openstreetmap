@@ -71,6 +71,12 @@ class _CarInfoScreenState extends State<CarInfoScreen> {
      await Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context)
   {

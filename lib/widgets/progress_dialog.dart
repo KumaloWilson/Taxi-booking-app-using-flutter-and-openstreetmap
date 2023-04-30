@@ -34,9 +34,9 @@ class ProgressDialog extends StatelessWidget
               ),
               Text(
                 message!,
-                style: const TextStyle(
+                style:  TextStyle(
                   color: Colors.white,
-                  fontSize: 12,
+                  fontSize: MediaQuery.of(context).size.width*0.04,
                 ),
               )
             ],
