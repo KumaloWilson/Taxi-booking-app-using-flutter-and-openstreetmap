@@ -8,7 +8,7 @@ class FareAmountCollectionDialog extends StatefulWidget
 {
   double? totalFareAmount;
 
-  FareAmountCollectionDialog({this.totalFareAmount});
+  FareAmountCollectionDialog({super.key, this.totalFareAmount});
 
   @override
   State<FareAmountCollectionDialog> createState() => _FareAmountCollectionDialogState();
@@ -38,37 +38,45 @@ class _FareAmountCollectionDialogState extends State<FareAmountCollectionDialog>
           mainAxisSize: MainAxisSize.min,
           children: [
 
-            const SizedBox(height: 20,),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.03,
+            ),
 
             Text(
-              "Trip Fare Amount " + "(" + driverVehicleType!.toUpperCase() + ")",
-              style: const TextStyle(
+              "Trip Fare Amount (${driverVehicleType!.toUpperCase()})",
+              style:TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: MediaQuery.of(context).size.width * 0.04,
               ),
             ),
 
-            const SizedBox(height: 20,),
+
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.03,
+            ),
 
             const Divider(
               thickness: 4,
               color: Colors.white,
             ),
 
-            const SizedBox(height: 16,),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
 
             Text(
               widget.totalFareAmount.toString(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
-                fontSize: 50,
+                fontSize: MediaQuery.of(context).size.width * 0.18,
               ),
             ),
 
-            const SizedBox(height: 10,),
-
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
@@ -80,41 +88,27 @@ class _FareAmountCollectionDialogState extends State<FareAmountCollectionDialog>
               ),
             ),
 
-            const SizedBox(height: 10,),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
 
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.yellow,
-                ),
-                onPressed: ()
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor
+              ),
+              onPressed: ()
+              {
+                Future.delayed(const Duration(milliseconds: 2000), ()
                 {
-                  Future.delayed(const Duration(milliseconds: 2000), ()
-                  {
-                    SystemNavigator.pop();
-                  });
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Collect Cash",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "Z\$  " + widget.totalFareAmount!.toString(),
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                  SystemNavigator.pop();
+                });
+              },
+              child: const Text(
+                "Collect Cash",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

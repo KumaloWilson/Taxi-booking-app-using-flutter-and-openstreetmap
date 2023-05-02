@@ -43,9 +43,11 @@ class DriverAssistantMethods
 
   static Future<DirectionDetailsInfo?> obtainOriginToDestinationDirectionDetails(LatLng originPosition, LatLng destinationPosition) async
   {
-    String urlOriginToDestinationDirectionDetails = "https://maps.googleapis.com/maps/api/directions/json?origin=${originPosition.latitude},${originPosition.longitude}&destination=${destinationPosition.latitude},${destinationPosition.longitude}&key=$mapkey";
+    String urlOriginToDestinationDirectionDetails = "http://router.project-osrm.org/route/v1/driving/${originPosition.longitude},${originPosition.latitude};${destinationPosition.longitude},${destinationPosition.latitude}?geometries=geojson";
 
     var responseDirectionApi = await RequestAssistant.receiveRequest(urlOriginToDestinationDirectionDetails);
+
+    print('THIS IS THE API RESPONSE FROM OSRM $responseDirectionApi');
 
     if(responseDirectionApi == "Error Occurred, Failed. No Response.")
     {
@@ -53,13 +55,38 @@ class DriverAssistantMethods
     }
 
     DirectionDetailsInfo directionDetailsInfo = DirectionDetailsInfo();
-    directionDetailsInfo.e_points = responseDirectionApi["routes"][0]["overview_polyline"]["points"];
 
-    directionDetailsInfo.distance_text = responseDirectionApi["routes"][0]["legs"][0]["distance"]["text"];
-    directionDetailsInfo.distance_value = responseDirectionApi["routes"][0]["legs"][0]["distance"]["value"];
+    directionDetailsInfo.e_points = responseDirectionApi['routes'][0]['geometry']['coordinates'];
 
-    directionDetailsInfo.duration_text = responseDirectionApi["routes"][0]["legs"][0]["duration"]["text"];
-    directionDetailsInfo.duration_value = responseDirectionApi["routes"][0]["legs"][0]["duration"]["value"];
+    directionDetailsInfo.distance_text = (responseDirectionApi['routes'][0]['distance'] / 1000).toString();
+    directionDetailsInfo.distance_value = (responseDirectionApi['routes'][0]['distance'] / 1000);
+
+    directionDetailsInfo.duration_text = ((responseDirectionApi["routes"][0]['duration']/60) as double).ceil().toString();
+    directionDetailsInfo.duration_value = responseDirectionApi["routes"][0]['duration']/60.ceil();
+
+
+
+    print("THIS IS THE e_points value ${directionDetailsInfo.e_points}");
+    print("THIS IS DISTANCE TEXT AS A STRING ${directionDetailsInfo.distance_text}");
+    print("THIS IS DISTANCE VALUE ${directionDetailsInfo.distance_value}");
+    print("THIS IS DURATION TEXT AS A STRING ${directionDetailsInfo.duration_text}");
+    print("THIS IS DURATION VALUE ${directionDetailsInfo.duration_value}");
+
+    List<dynamic>? ePoints = directionDetailsInfo.e_points;
+
+
+    for (dynamic point in ePoints!) {
+      if (point is List<dynamic>) {
+
+        double lat = point[0];
+        double lng = point[1];
+        LatLng latLng = LatLng(lat, lng);
+        routeCoordinates.add(latLng);
+      }
+    }
+
+    print('THESE ARE ALL THE POINTS EXTRACTED FROM THE DIRECTION INFORMATION CLASS: $routeCoordinates');
+
 
     return directionDetailsInfo;
   }

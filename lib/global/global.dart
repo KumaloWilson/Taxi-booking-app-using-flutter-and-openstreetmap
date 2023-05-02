@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/driver_data.dart';
@@ -48,7 +49,7 @@ bool passengerMode = false;
 bool isAssistantActive = false;
 bool isDestinationFound = false;
 bool isCarDetailsProvided = false;
-Color primaryColor = const Color.fromARGB(255, 220, 171, 27);
+Color primaryColor = Colors.amber;
 String titleStarsRating = "";
 
 List<LatLng> routeCoordinates = [];

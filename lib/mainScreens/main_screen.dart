@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:elrick_trans_app/mainScreens/rate_driver_screen.dart';
 import 'package:elrick_trans_app/mainScreens/search_places_screen.dart';
 import 'package:elrick_trans_app/mainScreens/select_nearest_active_driver_screen.dart';
@@ -54,8 +55,7 @@ class _MainScreenState extends State<MainScreen> {
   bool checkInternet = false;
   bool awaitCoordinates = true;
   bool openNavigationDrawer = true;
-  String? userName;
-  String? userEmail;
+
 
 
   List<ActiveNearByAvailableDrivers> onlineNearByAvailableDriversList = [];
@@ -115,11 +115,6 @@ class _MainScreenState extends State<MainScreen> {
       print('ADDRESS NOT FOUND');
     }
 
-    setState(() {
-      userName = userModelCurrentInfo!.name!;
-      userEmail = userModelCurrentInfo!.email!;
-    });
-
     initializeGeoFireListener();
 
     PassengerAssistantMethods.readTripsKeysForOnlineUser(context);
@@ -146,7 +141,7 @@ class _MainScreenState extends State<MainScreen> {
       }
 
       setState(() {
-        driverRideStatus = "Driver is Coming : ${directionDetailsInfo.duration_text}";
+        driverRideStatus = "Driver is Coming : ${directionDetailsInfo.duration_text} Mins away";
       });
 
       requestPositionInfo = true;
@@ -173,8 +168,7 @@ class _MainScreenState extends State<MainScreen> {
       }
 
       setState(() {
-        driverRideStatus = "Going towards Destination : " +
-            directionDetailsInfo.duration_text.toString();
+        driverRideStatus = "Going towards Destination : ${directionDetailsInfo.duration_text} KM";
       });
 
       requestPositionInfo = true;
@@ -414,8 +408,7 @@ class _MainScreenState extends State<MainScreen> {
             //status = ended
             if (userRideRequestStatus == "ended") {
               if ((eventSnap.snapshot.value as Map)["fareAmount"] != null) {
-                double fareAmount = double.parse(
-                    (eventSnap.snapshot.value as Map)["fareAmount"].toString());
+                double fareAmount = double.parse((eventSnap.snapshot.value as Map)["fareAmount"].toString());
 
                 var response = await showDialog(
                   context: context,
@@ -428,8 +421,7 @@ class _MainScreenState extends State<MainScreen> {
                 if (response == "cashPayed") {
                   //user can rate the driver now
                   if ((eventSnap.snapshot.value as Map)["driverId"] != null) {
-                    String assignedDriverId =
-                    (eventSnap.snapshot.value as Map)["driverId"].toString();
+                    String assignedDriverId = (eventSnap.snapshot.value as Map)["driverId"].toString();
 
                     Navigator.push(
                         context,
@@ -474,8 +466,7 @@ class _MainScreenState extends State<MainScreen> {
             activeNearByAvailableDrivers.locationLatitude = map['latitude'];
             activeNearByAvailableDrivers.locationLongitude = map['longitude'];
             activeNearByAvailableDrivers.driverId = map['key'];
-            GeoFireAssistant.activeNearByAvailableDriversList
-                .add(activeNearByAvailableDrivers);
+            GeoFireAssistant.activeNearByAvailableDriversList.add(activeNearByAvailableDrivers);
 
             if (activeNearByDriverKeysLoaded == true) {
               // displayActiveDriversOnUserMap();
@@ -499,8 +490,7 @@ class _MainScreenState extends State<MainScreen> {
             activeNearByAvailableDrivers.driverId = map['key'];
             // displayActiveDriversOnUserMap();
 
-            GeoFireAssistant.updateActiveNearByAvailableDriverLocation(
-                activeNearByAvailableDrivers);
+            GeoFireAssistant.updateActiveNearByAvailableDriverLocation(activeNearByAvailableDrivers);
 
             break;
 
@@ -533,8 +523,10 @@ class _MainScreenState extends State<MainScreen> {
           });
         });
 
+    PassengerAssistantMethods.readCurrentOnlinePassengerInfo();
     checkIfLocationPermissionAllowed();
     checkIfLoadingCoordinates();
+
   }
 
   Widget buildBlinkingMarker() {
@@ -569,8 +561,8 @@ class _MainScreenState extends State<MainScreen> {
             canvasColor: Colors.black,
           ),
           child: MyDrawer(
-            name: userName,
-            email: userEmail,
+            name: userModelCurrentInfo?.name,
+            email: userModelCurrentInfo?.email,
           ),
         ),
       ),
@@ -754,7 +746,7 @@ class _MainScreenState extends State<MainScreen> {
                       Row(
                         children: [
                           const Icon(
-                            Icons.add_location_alt_outlined,
+                            Icons.my_location,
                             color: Colors.white,
                           ),
                           SizedBox(
@@ -818,7 +810,7 @@ class _MainScreenState extends State<MainScreen> {
                         child: Row(
                           children: [
                             const Icon(
-                              Icons.add_location_alt_outlined,
+                              Icons.location_on,
                               color: Colors.white,
                             ),
                             SizedBox(
@@ -935,6 +927,160 @@ class _MainScreenState extends State<MainScreen> {
             left: 0,
             right: 0,
             child: buildBlinkingMarker(),
+          ),
+
+          //ui for waiting response from driver
+          Positioned(
+            bottom: MediaQuery.of(context).size.height * 0.02,
+            left: MediaQuery.of(context).size.width * 0.03,
+            right: MediaQuery.of(context).size.width * 0.03,            child: Container(
+              height: waitingResponseFromDriverContainerHeight,
+              decoration: const BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20),
+                  topLeft: Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      FadeAnimatedText(
+                        'Waiting for Response\nfrom Driver',
+                        duration: const Duration(seconds: 6),
+                        textAlign: TextAlign.center,
+                        textStyle: const TextStyle(
+                            fontSize: 35.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      ScaleAnimatedText(
+                        'Please wait...',
+                        duration: const Duration(seconds: 10),
+                        textAlign: TextAlign.center,
+                        textStyle: const TextStyle(
+                            fontSize: 40.0,
+                            color: Colors.white,
+                            fontFamily: 'Canterbury'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          //ui for displaying assigned driver information
+          Positioned(
+            bottom: MediaQuery.of(context).size.height * 0.02,
+            left: MediaQuery.of(context).size.width * 0.03,
+            right: MediaQuery.of(context).size.width * 0.03,
+            child: Container(
+              height: assignedDriverInfoContainerHeight,
+              decoration: const BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20),
+                  topLeft: Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //status of ride
+                    Center(
+                      child: Text(
+                        driverRideStatus,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
+
+                    const Divider(
+                      height: 2,
+                      thickness: 2,
+                      color: Colors.white54,
+                    ),
+
+
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+
+                    //driver name
+                    Text(
+                      driverName,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white54,
+                      ),
+                    ),
+
+                    //driver vehicle details
+                    Text(
+                      driverCarDetails,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white54,
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+
+                    const Divider(
+                      height: 2,
+                      thickness: 2,
+                      color: Colors.white54,
+                    ),
+
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+
+                    //call driver button
+                    Center(
+                      child: ElevatedButton.icon(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                        ),
+                        icon: const Icon(
+                          Icons.phone_android,
+                          color: Colors.black54,
+                          size: 22,
+                        ),
+                        label: const Text(
+                          "Call Driver",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),

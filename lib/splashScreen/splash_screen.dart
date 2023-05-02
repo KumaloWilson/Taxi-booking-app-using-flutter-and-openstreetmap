@@ -24,7 +24,6 @@ class _MySplashScreenState extends State<MySplashScreen> {
     Timer.periodic(oneSec, (Timer t) {
       setState(() {
         _loading_progressValue += 0.1;
-        // we "finish" downloading here
         if (_loading_progressValue.toStringAsFixed(1) == '1.0') {
           t.cancel();
           return;

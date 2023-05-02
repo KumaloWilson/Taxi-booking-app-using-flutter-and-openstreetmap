@@ -4,7 +4,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '../driver_screens/new_trip_screen.dart';
 import '../global/global.dart';
 import '../models/passenger_ride_request_information.dart';
@@ -14,7 +13,7 @@ class NotificationDialogBox extends StatefulWidget
 {
   UserRideRequestInformation? userRideRequestDetails;
 
-  NotificationDialogBox({this.userRideRequestDetails});
+  NotificationDialogBox({super.key, this.userRideRequestDetails});
 
   @override
   State<NotificationDialogBox> createState() => _NotificationDialogBoxState();
@@ -36,89 +35,75 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox>
       elevation: 2,
       child: Container(
         margin: const EdgeInsets.all(8),
-        width: double.infinity,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(20),
           color: Colors.black,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
 
-            const SizedBox(height: 14,),
-
             Image.asset(
-              "images/car_logo.png",
-              width: 160,
+              "images/cab1.png",
+              width: MediaQuery.of(context).size.width * 0.4,
             ),
 
-            const SizedBox(height: 10,),
 
             //title
-            const Text(
+            Text(
               "New Ride Request",
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
+                fontWeight: FontWeight.w500,
+                fontSize: MediaQuery.of(context).size.width * 0.055,
                 color: Colors.white
               ),
             ),
 
-            const SizedBox(height: 14.0),
-
-            const Divider(
-              height: 3,
-              thickness: 3,
-            ),
-
             //addresses origin destination
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
                   //origin location with icon
-                  Row(
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.05
+                  ),
+
+
+                  Column(
                     children: [
-                      Image.asset(
-                        "images/origin.png",
-                        width: 30,
-                        height: 30,
+                      const Text(
+                          'PICKING POINT',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
                       ),
-                      const SizedBox(width: 14,),
-                      Expanded(
-                        child: Container(
-                          child: Text(
-                            widget.userRideRequestDetails!.originAddress!,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
-                          ),
+
+                      Text(
+                        widget.userRideRequestDetails!.originAddress!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
                         ),
                       ),
                     ],
                   ),
-
-                  const SizedBox(height: 20.0),
-
                   //destination location with icon
-                  Row(
+                  Column(
                     children: [
-                      Image.asset(
-                        "images/destination.png",
-                        width: 30,
-                        height: 30,
+                      const Text(
+                        'DROPPING POINT',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
                       ),
-                      const SizedBox(width: 14,),
-                      Expanded(
-                        child: Container(
-                          child: Text(
-                            widget.userRideRequestDetails!.destinationAddress!,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
-                          ),
+                      Text(
+                        widget.userRideRequestDetails!.destinationAddress!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
                         ),
                       ),
                     ],
@@ -128,11 +113,6 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox>
             ),
 
 
-            const Divider(
-              height: 3,
-              thickness: 3,
-            ),
-
             //buttons cancel accept
             Padding(
               padding: const EdgeInsets.all(20.0),
@@ -140,15 +120,7 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.redAccent,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25)
-                      ),
-                    ),
-                    onPressed: ()
-                    {
+                    onPressed: (){
                       audioPlayer.pause();
                       audioPlayer.stop();
                       audioPlayer = AssetsAudioPlayer();
@@ -182,6 +154,9 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox>
                         SystemNavigator.pop();
                       });
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent
+                    ),
                     child: const Text(
                       "Reject",
                       style: TextStyle(
@@ -191,16 +166,12 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox>
                     ),
                   ),
 
-                  const SizedBox(width: 25.0),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.08,
+                  ),
+
 
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.yellow,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25)
-                      ),
-                    ),
                     onPressed: ()
                     {
                       audioPlayer.pause();
@@ -210,6 +181,9 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox>
                       //accept the rideRequest
                       acceptRideRequest(context);
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor
+                    ),
                     child: const Text(
                       "Accept",
                       style: TextStyle(
@@ -230,38 +204,34 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox>
 
   acceptRideRequest(BuildContext context)
   {
+    print('RIDE REQUEST ACCEPT BUTTON CLICKED');
+
     String getRideRequestId = "";
-    FirebaseDatabase.instance.ref()
-        .child("drivers")
-        .child(currentFirebaseUser!.uid)
-        .child("newRideStatus")
-        .once()
-        .then((snap)
-    {
-      if(snap.snapshot.value != null)
-        {
+
+    FirebaseDatabase.instance.ref().child("drivers").child(currentFirebaseUser!.uid).child("newRideStatus").once().then((snap){
+      if(snap.snapshot.value != null){
           getRideRequestId = snap.snapshot.value.toString();
+
+          print('THE RIDE REQUEST ID IS $getRideRequestId');
         }
-      else
-        {
+      else{
           Fluttertoast.showToast(msg: "Invalid Ride Request");
         }
 
-      if(getRideRequestId == widget.userRideRequestDetails!.rideRequestId)
-        {
 
-          FirebaseDatabase.instance.ref()
-              .child("drivers")
-              .child(currentFirebaseUser!.uid)
-              .child("newRideStatus")
-              .set("accepted");
+
+      print('THE RIDE REQUEST ID IS $getRideRequestId');
+      print('THE RIDE REQUEST ID IS  ${widget.userRideRequestDetails!.rideRequestId}');
+
+      if(getRideRequestId == widget.userRideRequestDetails!.rideRequestId ||  getRideRequestId == 'idle'){
+          FirebaseDatabase.instance.ref().child("drivers").child(currentFirebaseUser!.uid).child("newRideStatus").set("accepted");
 
           DriverAssistantMethods.pauseLiveLocationUpdates();
 
           //send new Ride Screen to TripScreen
-          // Navigator.push(context, MaterialPageRoute(builder: (c) => NewTripScreen(
-          //   userRideRequestDetails: widget.userRideRequestDetails,
-          // )));
+          Navigator.push(context, MaterialPageRoute(builder: (c) => NewTripScreen(
+            userRideRequestDetails: widget.userRideRequestDetails,
+          )));
         }
 
       else

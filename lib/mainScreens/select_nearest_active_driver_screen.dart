@@ -11,7 +11,7 @@ class SelectNearestActiveDriversScreen extends StatefulWidget
 {
  DatabaseReference? referenceRideRequest;
 
- SelectNearestActiveDriversScreen({this.referenceRideRequest});
+ SelectNearestActiveDriversScreen({super.key, this.referenceRideRequest});
 
   @override
   State<SelectNearestActiveDriversScreen> createState() => _SelectNearestActiveDriversScreenState();
@@ -96,14 +96,16 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
                   child: Card(
                     color: Colors.grey,
                     elevation: 3,
-                    shadowColor: Colors.yellow,
-                    margin: const EdgeInsets.all(8),
+                    shadowColor: primaryColor,
+                    margin: EdgeInsets.all(
+                      MediaQuery.of(context).size.width*0.02
+                    ),
                     child: ListTile(
                       leading: Padding(
                         padding: const EdgeInsets.only(top: 2.0),
                         child: Image.asset(
-                          "images/" + dList[index]["car_details"]["type"].toString() + ".png",
-                          width: 70,
+                          "images/${dList[index]["car_details"]["type"]}.png",
+                          width: MediaQuery.of(context).size.width*0.17,
                         ),
                       ),
                       title: Column(
@@ -137,7 +139,7 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Z\$ " + getFareAmountAccordingToVehicleType(index),
+                            "\$ ${getFareAmountAccordingToVehicleType(index)}",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.redAccent,

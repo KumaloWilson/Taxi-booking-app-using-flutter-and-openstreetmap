@@ -22,11 +22,10 @@ class RatingsTabPage extends StatefulWidget
 
 class _RatingsTabPageState extends State<RatingsTabPage>
 {
-  double ratingsNumber=0;
+  double ratingsNumber = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     getRatingsNumber();

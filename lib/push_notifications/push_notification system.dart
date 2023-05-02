@@ -54,7 +54,7 @@ class PushNotificationSystem
     {
       if(snapData.snapshot.value != null)
       {
-        audioPlayer.open(Audio("music/music_notification.mp3"));
+        audioPlayer.open(Audio("music/notification_tone.mp3"));
         audioPlayer.play();
 
         double originLat = double.parse((snapData.snapshot.value! as Map)["origin"]["latitude"]);

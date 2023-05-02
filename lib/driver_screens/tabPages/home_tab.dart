@@ -27,7 +27,6 @@ class _HomeTabPageState extends State<HomeTabPage> {
     subdomains: ['a', 'b', 'c'],
   );
   StreamSubscription<Position>? _positionStreamSubscription;
-  Position? driverCurrentPosition;
   var geoLocator = Geolocator();
   LocationPermission? _locationPermission;
 

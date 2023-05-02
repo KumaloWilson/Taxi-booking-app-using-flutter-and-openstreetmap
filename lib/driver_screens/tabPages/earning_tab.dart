@@ -1,3 +1,4 @@
+import 'package:elrick_trans_app/global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,28 +26,28 @@ class _EarningsTabPageState extends State<EarningsTabPage> {
         children: [
           //earnings
           Container(
-            color: Colors.yellow,
+            color: primaryColor,
             width: double.infinity,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 80),
+              padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.08
+              ),
               child: Column(
                 children: [
 
-                  const Text(
+                  Text(
                     "Total Earnings:",
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 25,
+                      fontSize: MediaQuery.of(context).size.width * 0.08,
                     ),
                   ),
 
-                  const SizedBox(height: 5,),
-
                   Text(
-                    "Z\$ " + Provider.of<AppInfo>(context, listen: false).driverTotalEarnings,
-                    style: const TextStyle(
+                    "USD\$ ${Provider.of<AppInfo>(context, listen: false).driverTotalEarnings}",
+                    style: TextStyle(
                       color: Colors.black,
-                      fontSize: 60,
+                      fontSize: MediaQuery.of(context).size.width * 0.1,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -63,20 +64,23 @@ class _EarningsTabPageState extends State<EarningsTabPage> {
               Navigator.push(context, MaterialPageRoute(builder: (c)=> TripsHistoryScreen()));
             },
             style: ElevatedButton.styleFrom(
-                primary: Colors.transparent,
+                backgroundColor: Colors.transparent,
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.02,
+                  vertical: MediaQuery.of(context).size.height * 0.01
+              ),
               child: Row(
                 children: [
 
                   Image.asset(
                     "images/car_logo.png",
-                    width: 100,
+                    width: MediaQuery.of(context).size.width * 0.3,
                   ),
 
-                  const SizedBox(
-                    width: 6,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.1,
                   ),
 
                   const Text(
@@ -87,15 +91,13 @@ class _EarningsTabPageState extends State<EarningsTabPage> {
                   ),
 
                   Expanded(
-                    child: Container(
-                      child: Text(
-                        Provider.of<AppInfo>(context, listen: false).allDriverTripsHistoryInformationList.length.toString(),
-                        textAlign: TextAlign.end,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                    child: Text(
+                      Provider.of<AppInfo>(context, listen: false).allDriverTripsHistoryInformationList.length.toString(),
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                   ),

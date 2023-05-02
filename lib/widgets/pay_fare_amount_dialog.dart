@@ -105,7 +105,7 @@ class _PayFareAmountDialogState extends State<PayFareAmountDialog>
                       ),
                     ),
                     Text(
-                      "Z\$  " + widget.fareAmount!.toString(),
+                      "Z\$  ${widget.fareAmount!}",
                       style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,

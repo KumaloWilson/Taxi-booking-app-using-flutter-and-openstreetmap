@@ -1,8 +1,10 @@
+import 'package:latlong2/latlong.dart';
+
 class DirectionDetailsInfo
 {
-  int? distance_value;
-  int? duration_value;
-  String? e_points;
+  var distance_value;
+  var duration_value;
+  List<dynamic>? e_points;
   String? distance_text;
   String? duration_text;
 
