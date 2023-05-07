@@ -1,97 +1,111 @@
+import 'package:elrick_trans_app/global/global.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-import '../global/global.dart';
 import '../widgets/passenger_info_design_ui.dart';
 
 
-class ProfileScreen extends StatefulWidget
+
+
+class PassengerProfileScreen extends StatefulWidget
 {
+  const PassengerProfileScreen({Key? key}) : super(key: key);
+
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<PassengerProfileScreen> createState() => _PassengerProfileScreenState();
 }
 
-
-
-
-class _ProfileScreenState extends State<ProfileScreen>
+class _PassengerProfileScreenState extends State<PassengerProfileScreen>
 {
   @override
   Widget build(BuildContext context)
   {
-
     return Container(
-        constraints: const BoxConstraints.expand(),
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("images/Absolute_BG.png"), fit: BoxFit.fill)),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("images/Absolute_BG.png"),
+              fit: BoxFit.fill)
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.06,
+              ),
 
-                //name
-                Text(
-                  userModelCurrentInfo!.name!,
-                  style: const TextStyle(
-                    fontSize: 30.0,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
+              CircleAvatar(
+                radius: MediaQuery.of(context).size.width * 0.2,
+              ),
+
+              //name
+              Text(
+                userModelCurrentInfo!.name!,
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * 0.055,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
 
-                const SizedBox(
-                  height: 20,
-                  width: 200,
-                  child: Divider(
-                    color: Colors.white,
-                    height: 2,
-                    thickness: 2,
-                  ),
+              SizedBox(
+                height: 0,
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: const Divider(
+                  color: Colors.white,
+                  height: 2,
+                  thickness: 2,
                 ),
+              ),
 
-                const SizedBox(height: 38.0,),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
 
-                //phone
-                InfoDesignUIWidget(
-                  textInfo: userModelCurrentInfo!.phone!,
-                  iconData: Icons.phone_iphone,
-                ),
+              //phone
+              InfoDesignUIWidget(
+                textInfo: userModelCurrentInfo!.phone,
+                iconData: Icons.phone_iphone,
+              ),
 
-                //email
-                InfoDesignUIWidget(
-                  textInfo: userModelCurrentInfo!.email!,
-                  iconData: Icons.email,
-                ),
+              //email
+              InfoDesignUIWidget(
+                textInfo: userModelCurrentInfo!.email,
+                iconData: Icons.email,
+              ),
 
-                const SizedBox(
-                  height: 20,
-                ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
 
-                ElevatedButton(
-                  onPressed: ()
-                  {
-                    SystemNavigator.pop();
+              GestureDetector(
+                  onTap: (){
+                    fAuth.signOut();
                   },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.redAccent,
-                    padding: EdgeInsets.symmetric(horizontal: 100, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25)
+                  child: Container(
+                    height: 45,
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                  ),
-                  child: const Text(
-                    "Exit",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-
-              ],
-            ),
+                    child: const Center(
+                      child: Text(
+                        'Sign Out',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  )
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 }

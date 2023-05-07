@@ -22,7 +22,7 @@ class _InfoDesignUIWidgetState extends State<InfoDesignUIWidget>
   {
     return Card(
       color: Colors.white,
-      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
       child: ListTile(
         leading: Icon(
           widget.iconData,
@@ -30,9 +30,9 @@ class _InfoDesignUIWidgetState extends State<InfoDesignUIWidget>
         ),
         title: Text(
           widget.textInfo!,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.black,
-            fontSize: 16,
+            fontSize: MediaQuery.of(context).size.width * 0.045,
             fontWeight: FontWeight.bold,
           ),
         ),

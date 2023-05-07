@@ -42,25 +42,25 @@ class _RatingsTabPageState extends State<RatingsTabPage>
 
   setupRatingsTitle()
   {
-    if(ratingsNumber == 1)
+    if(ratingsNumber < 2)
     {
       setState(() {
         titleStarsRating = "Very Bad";
       });
     }
-    if(ratingsNumber == 2)
+    if(ratingsNumber >= 2 && ratingsNumber < 3)
     {
       setState(() {
         titleStarsRating = "Bad";
       });
     }
-    if(ratingsNumber == 3)
+    if(ratingsNumber >= 3 && ratingsNumber < 4)
     {
       setState(() {
         titleStarsRating = "Good";
       });
     }
-    if(ratingsNumber == 4)
+    if(ratingsNumber >= 4 && ratingsNumber < 5)
     {
       setState(() {
         titleStarsRating = "Very Good";
@@ -80,7 +80,12 @@ class _RatingsTabPageState extends State<RatingsTabPage>
       constraints: const BoxConstraints.expand(),
       decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("images/Absolute_BG.png"), fit: BoxFit.fill)),
+              image: AssetImage(
+                  "images/Absolute_BG.png"
+              ),
+              fit: BoxFit.fill
+          )
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Dialog(
@@ -98,27 +103,31 @@ class _RatingsTabPageState extends State<RatingsTabPage>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
 
-                const SizedBox(height: 22.0,),
-
-                const Text(
+                Text(
                   "Average Ratings:",
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: MediaQuery.of(context).size.width * 0.055,
                     letterSpacing: 2,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
 
-                const SizedBox(height: 22.0,),
-
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
                 const Divider(
                   thickness: 4,
                   color: Colors.white,
                 ),
 
-                const SizedBox(height: 22.0,),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
 
                 SmoothStarRating(
                   rating: ratingsNumber,
@@ -126,10 +135,12 @@ class _RatingsTabPageState extends State<RatingsTabPage>
                   starCount: 5,
                   color: Colors.amber,
                   borderColor: Colors.amber,
-                  size: 46,
+                  size: MediaQuery.of(context).size.width * 0.12,
                 ),
 
-                const SizedBox(height: 12.0,),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.01,
+                ),
 
                 Text(
                   titleStarsRating,
@@ -140,7 +151,9 @@ class _RatingsTabPageState extends State<RatingsTabPage>
                   ),
                 ),
 
-                const SizedBox(height: 18.0,),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
 
               ],
             ),

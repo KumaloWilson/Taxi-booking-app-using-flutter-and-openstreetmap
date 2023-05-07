@@ -95,14 +95,14 @@ class _MyDrawerState extends State<MyDrawer>
 
 
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.005,
+            height: MediaQuery.of(context).size.height * 0.01,
           ),
 
           //Visit profile Button
           GestureDetector(
             onTap: ()
             {
-              Navigator.push(context, MaterialPageRoute(builder: (c)=> ProfileScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (c)=> const PassengerProfileScreen()));
 
             },
             child: Container(

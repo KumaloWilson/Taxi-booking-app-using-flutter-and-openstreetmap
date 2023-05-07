@@ -53,4 +53,3 @@ Color primaryColor = Colors.amber;
 String titleStarsRating = "";
 
 List<LatLng> routeCoordinates = [];
-late LatLng polyLineStartingPoint;

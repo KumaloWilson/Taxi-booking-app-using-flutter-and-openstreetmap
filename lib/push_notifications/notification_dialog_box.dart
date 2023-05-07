@@ -31,86 +31,93 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox>
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
       ),
-      backgroundColor: Colors.transparent,
+      backgroundColor: primaryColor,
       elevation: 2,
       child: Container(
-        margin: const EdgeInsets.all(8),
+        margin: const EdgeInsets.all(2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Colors.black,
+          color: Colors.black87,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
 
-            Image.asset(
-              "images/cab1.png",
-              width: MediaQuery.of(context).size.width * 0.4,
-            ),
-
-
-            //title
-            Text(
-              "New Ride Request",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: MediaQuery.of(context).size.width * 0.055,
-                color: Colors.white
+            CircleAvatar(
+              radius: MediaQuery.of(context).size.width * 0.15,
+              backgroundColor: Colors.transparent,
+              child: Image.asset(
+                "images/cab1.png",
+                width: MediaQuery.of(context).size.width * 0.4,
               ),
             ),
 
-            //addresses origin destination
+            Text(
+              "New Ride Request",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: MediaQuery.of(context).size.width * 0.06,
+                  color: Colors.white
+              ),
+            ),
+
+            //title
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.06
+              ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //origin location with icon
+                  //addresses origin destination
                   SizedBox(
                       height: MediaQuery.of(context).size.height * 0.05
                   ),
 
 
-                  Column(
-                    children: [
-                      const Text(
-                          'PICKING POINT',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
+                  Text(
+                    'PICKING POINT:',
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.045,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600
+                    ),
+                  ),
 
-                      Text(
-                        widget.userRideRequestDetails!.originAddress!,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    widget.userRideRequestDetails!.originAddress!,
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.035,
+                      color: Colors.white,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
                   ),
                   //destination location with icon
-                  Column(
-                    children: [
-                      const Text(
-                        'DROPPING POINT',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        widget.userRideRequestDetails!.destinationAddress!,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    'DROPPING POINT:',
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.045,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600
+                    ),
+                  ),
+
+                  Text(
+                    widget.userRideRequestDetails!.destinationAddress!,
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.035,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),
             ),
+
+
 
 
             //buttons cancel accept

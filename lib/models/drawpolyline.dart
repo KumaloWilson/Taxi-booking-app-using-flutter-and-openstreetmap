@@ -2,15 +2,15 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
-
+import '../assistants/passenger_assistance_methods.dart';
 import '../global/global.dart';
 
 class DrawPolyline{
   //Fetch route to draw a polyline
   Future<List<LatLng>> fetchRouteCoordinates(LatLng start, LatLng end) async {
-    String url = 'http://router.project-osrm.org/route/v1/driving/${start.longitude},${start.latitude};${end.longitude},${end.latitude}?geometries=geojson';
+    String url = "http://router.project-osrm.org/route/v1/driving/${start.longitude},${start.latitude};${end.longitude},${end.latitude}?geometries=geojson";
+    var directionDetailsInfo =  await PassengerAssistantMethods.obtainOriginToDestinationDirectionDetails(start, end);
 
-    print("URL: $url");
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -28,6 +28,10 @@ class DrawPolyline{
 
       print("ROUTE COORDINATES: $routeCoordinates");
 
+
+      tripDirectionDetailsInfo = directionDetailsInfo;
+
+
       return routeCoordinates;
 
     } else {
@@ -35,3 +39,25 @@ class DrawPolyline{
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

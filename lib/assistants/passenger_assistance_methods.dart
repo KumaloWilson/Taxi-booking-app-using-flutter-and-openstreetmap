@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import '../global/global.dart';
-import '../global/map_key.dart';
 import '../infoHandler/info_handler.dart';
 import '../models/direction_details_info.dart';
 import '../models/directions.dart';
@@ -78,7 +77,7 @@ class PassengerAssistantMethods
 
     directionDetailsInfo.e_points = responseDirectionApi['routes'][0]['geometry']['coordinates'];
 
-    directionDetailsInfo.distance_text = (responseDirectionApi['routes'][0]['distance'] / 1000).toString();
+    directionDetailsInfo.distance_text = (responseDirectionApi['routes'][0]['distance'] / 1000).toStringAsFixed(2);
     directionDetailsInfo.distance_value = (responseDirectionApi['routes'][0]['distance'] / 1000);
 
     directionDetailsInfo.duration_text = ((responseDirectionApi["routes"][0]['duration']/60) as double).ceil().toString();
@@ -92,18 +91,35 @@ class PassengerAssistantMethods
     print("THIS IS DURATION TEXT AS A STRING ${directionDetailsInfo.duration_text}");
     print("THIS IS DURATION VALUE ${directionDetailsInfo.duration_value}");
 
+    List<dynamic>? ePoints = directionDetailsInfo.e_points;
+
+
+    for (dynamic point in ePoints!) {
+      if (point is List<dynamic>) {
+
+        double lat = point[0];
+        double lng = point[1];
+        LatLng latLng = LatLng(lat, lng);
+        routeCoordinates.add(latLng);
+      }
+    }
+
+    print('THESE ARE ALL THE POINTS EXTRACTED FROM THE DIRECTION INFORMATION CLASS: $routeCoordinates');
+
+
     return directionDetailsInfo;
   }
 
-    //Prices for taxis
+  //Prices for taxis
     static double calculateFareAmountFromOriginToDestination(DirectionDetailsInfo directionDetailsInfo)
     {
-      double timeTraveledFareAmountPerMinute = (directionDetailsInfo.duration_value! / 60) * 0.2;
-      double distanceTraveledFareAmountPerKilometer = (directionDetailsInfo.duration_value! / 1000) * 0.2;
+      double timeTraveledFareAmountPerMinute = (directionDetailsInfo.duration_value! / 60) * 0.5;
 
-      //1 USD = 650 RTGS
+      double distanceTraveledFareAmountPerKilometer = (directionDetailsInfo.distance_value! ) * 0.5;
+
+
       double totalFareAmount = timeTraveledFareAmountPerMinute + distanceTraveledFareAmountPerKilometer;
-      double localCurrencyTotalFare = totalFareAmount * 650;
+      double localCurrencyTotalFare = totalFareAmount;
 
       return double.parse(localCurrencyTotalFare.toStringAsFixed(2));
     }

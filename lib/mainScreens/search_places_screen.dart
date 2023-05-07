@@ -4,6 +4,8 @@ import '../assistants/request_assistant.dart';
 import '../widgets/place_prediction_tile.dart';
 
 class SearchPlacesScreen extends StatefulWidget {
+  const SearchPlacesScreen({super.key});
+
   @override
   State<SearchPlacesScreen> createState() => _SearchPlacesScreenState();
 }
@@ -33,7 +35,9 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
               lon: double.parse(jsonData['lon'].toString())))
               .toList();
 
-          setState(() {});
+          setState(() {
+
+          });
         } catch (e) {
           print('Error mapping response data: $e');
         }

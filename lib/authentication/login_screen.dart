@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen>
 {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
+  String? errorMsg;
 
   updateLoginTextUserMode() async{
 
@@ -68,9 +69,36 @@ class _LoginScreenState extends State<LoginScreen>
         await fAuth.signInWithEmailAndPassword(
             email: emailTextEditingController.text.trim(),
             password: passwordTextEditingController.text.trim()
-        ).catchError((msg){
+        ).catchError((error) async {
+          errorMsg = error.toString();
+
+          print("THIS IS THE EXCEPTION MESSAGE :  $errorMsg");
+
           Navigator.pop(context);
-          Fluttertoast.showToast(msg: "ERROR: $msg");
+
+          if(errorMsg == '[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.')
+            {
+              await Fluttertoast.showToast(msg: "Email account does not exist");
+            }
+
+          else if (errorMsg == "[firebase_auth/wrong-password] The password is invalid or the user does not have a password.")
+            {
+              await Fluttertoast.showToast(msg: "Incorrect password");
+            }
+
+          else if(errorMsg == "[firebase_auth/too-many-requests] We have blocked all requests from this device due to unusual activity. Try again later.")
+            {
+              await Fluttertoast.showToast(msg: "Too Many Attempts \nYour account has been temporarily blocked. Please Contact Customer Service");
+            }
+
+          else if(errorMsg == "[firebase_auth/network-request-failed] A network error (such as timeout, interrupted connection or unreachable host) has occurred.")
+            {
+              await Fluttertoast.showToast(msg: "Please check your internet access");
+            }
+
+          else if(errorMsg == "[firebase_auth/invalid-email] The email address is badly formatted."){
+            await Fluttertoast.showToast(msg: "The email address is badly formatted.");
+          }
         })
     ).user;
 
@@ -259,19 +287,6 @@ class _LoginScreenState extends State<LoginScreen>
                               width: MediaQuery.of(context).size.width* 0.065,
                             )
                           ),
-
-                          ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(255, 3, 152, 158),
-                                shape: const CircleBorder(), //<-- SEE HERE
-                                padding: const EdgeInsets.all(10),
-                              ),
-                              child: Image.asset(
-                                'images/google.png',
-                                width: MediaQuery.of(context).size.width* 0.065,
-                              )
-                          ),
                         ],
                       ),
                     ),
@@ -317,11 +332,6 @@ class _LoginScreenState extends State<LoginScreen>
           ),
         ),
       ),
-
-
     );
-
-
-
   }
 }

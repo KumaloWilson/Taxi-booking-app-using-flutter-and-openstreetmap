@@ -1,103 +1,152 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'dart:async';
 
+import 'package:elrick_trans_app/widgets/progress_dialog.dart';
+import 'package:flutter/material.dart';
 import '../../global/global.dart';
 import '../../widgets/driver_info_design_ui.dart';
 
 
 
 
-class ProfileTabPage extends StatefulWidget
+class DriverProfileTabPage extends StatefulWidget
 {
-  const ProfileTabPage({Key? key}) : super(key: key);
+  const DriverProfileTabPage({Key? key}) : super(key: key);
 
   @override
-  State<ProfileTabPage> createState() => _ProfileTabPageState();
+  State<DriverProfileTabPage> createState() => _DriverProfileTabPageState();
 }
 
-class _ProfileTabPageState extends State<ProfileTabPage>
+class _DriverProfileTabPageState extends State<DriverProfileTabPage>
 {
+  bool checkInternet = false;
+  bool awaitDriverInfo = true;
+
+  checkIfLoadingDriverInfo(){
+    if(awaitDriverInfo == true) {
+      Timer(const Duration(seconds: 30), () async {
+        if(awaitDriverInfo == true){
+          setState(() {
+            checkInternet = true;
+          });
+          print('check your internet');
+        }
+      });
+    }
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if(onlineDriverData.name != null){
+      setState(() {
+        awaitDriverInfo = false;
+        checkInternet = false;
+      });
+    }
+
+    checkIfLoadingDriverInfo();
+
+  }
   @override
   Widget build(BuildContext context)
   {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-            //name
-            Text(
-              "Norman Kumalo",
-              style: const TextStyle(
-                fontSize: 50.0,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-
-            Text(
-              titleStarsRating + " driver",
-              style: const TextStyle(
-                fontSize: 18.0,
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(
-              height: 20,
-              width: 200,
-              child: Divider(
-                color: Colors.white,
-                height: 2,
-                thickness: 2,
-              ),
-            ),
-
-            const SizedBox(height: 38.0,),
-
-            //phone
-            InfoDesignUIWidget(
-              textInfo: "0771910924",
-              iconData: Icons.phone_iphone,
-            ),
-
-            //email
-            InfoDesignUIWidget(
-              textInfo: "normankumz26@gmail.com",
-              iconData: Icons.email,
-            ),
-
-            InfoDesignUIWidget(
-              textInfo: "Toyota Wish",
-              iconData: Icons.car_repair,
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            ElevatedButton(
-              onPressed: ()
-              {
-                fAuth.signOut();
-                SystemNavigator.pop();
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.redAccent,
-              ),
-              child: const Text(
-                "Logout",
-                style: TextStyle(color: Colors.white),
-              ),
-            )
-
-          ],
-        ),
+    return Container(
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("images/Absolute_BG.png"),
+              fit: BoxFit.fill)
       ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: awaitDriverInfo ? ProgressDialog(
+          message: 'Loading Driver Profile',
+        ):SingleChildScrollView(
+          child:  Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.06,
+              ),
+
+              CircleAvatar(
+                radius: MediaQuery.of(context).size.width * 0.25,
+              ),
+
+              //name
+              Text(
+                onlineDriverData.name!,
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * 0.055,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              SizedBox(
+                height: 0,
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: const Divider(
+                  color: Colors.white,
+                  height: 2,
+                  thickness: 2,
+                ),
+              ),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
+
+              //phone
+              InfoDesignUIWidget(
+                textInfo: onlineDriverData.phone,
+                iconData: Icons.phone_iphone,
+              ),
+
+              //email
+              InfoDesignUIWidget(
+                textInfo: onlineDriverData.email,
+                iconData: Icons.email,
+              ),
+
+              InfoDesignUIWidget(
+                textInfo: onlineDriverData.car_model,
+                iconData: Icons.car_repair,
+              ),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
+
+              GestureDetector(
+                onTap: (){
+                  fAuth.signOut();
+                },
+                child: Container(
+                  height: 45,
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Sign Out',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              ),
+            ],
+          )
+              )
+        ),
     );
   }
 }

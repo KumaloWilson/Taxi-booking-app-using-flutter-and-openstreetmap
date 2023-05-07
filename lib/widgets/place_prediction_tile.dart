@@ -2,6 +2,7 @@ import 'package:elrick_trans_app/widgets/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
+import '../assistants/passenger_assistance_methods.dart';
 import '../global/global.dart';
 import '../infoHandler/info_handler.dart';
 import '../models/directions.dart';
@@ -13,7 +14,7 @@ class PlacePredictionTileDesign extends StatefulWidget
 {
   final SearchPlacesData? predictedPlaces;
 
-  PlacePredictionTileDesign({this.predictedPlaces});
+  const PlacePredictionTileDesign({super.key, this.predictedPlaces});
 
   @override
   State<PlacePredictionTileDesign> createState() => _PlacePredictionTileDesignState();
@@ -37,7 +38,8 @@ class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
 
     if (responseApi == "Some error occurred. Please try again") {
       return;
-    } else {
+    }
+    else {
       Directions directions = Directions();
 
       // Check for localname address
@@ -61,8 +63,7 @@ class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
 
       print("THESE ARE THE DIRECTIONS $directions");
 
-      Provider.of<AppInfo>(context, listen: false)
-          .updateDropOffLocationAddress(directions);
+      Provider.of<AppInfo>(context, listen: false).updateDropOffLocationAddress(directions);
 
       setState(() {
         userDropOffAddress = directions.locationName!;
@@ -71,15 +72,9 @@ class _PlacePredictionTileDesignState extends State<PlacePredictionTileDesign> {
       });
 
       Navigator.pop(context, "obtainedDropoff");
-      await fetchRoute();
     }
   }
 
-  //Fetch Coordinates and draw polyline
-  Future<void> fetchRoute() async {
-    List<LatLng> coordinates = await DrawPolyline().fetchRouteCoordinates(polyLineStartingPoint, userDropOffPosition!);
-    routeCoordinates = coordinates;
-  }
 
   @override
   Widget build(BuildContext context) {

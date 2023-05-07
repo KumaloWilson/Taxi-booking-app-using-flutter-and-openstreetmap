@@ -334,6 +334,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
                             widget.userRideRequestDetails!.originAddress!,
                             style: const TextStyle(
                               fontSize: 16,
+                              overflow: TextOverflow.ellipsis,
                               color: Colors.white,
                             ),
                           ),

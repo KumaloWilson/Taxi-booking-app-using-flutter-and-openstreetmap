@@ -1,5 +1,3 @@
-
-
 import '../models/active_nearby_availabledrivers.dart';
 
 class GeoFireAssistant

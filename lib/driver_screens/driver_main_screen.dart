@@ -5,7 +5,6 @@ import 'package:elrick_trans_app/driver_screens/tabPages/ratings_tab.dart';
 import 'package:elrick_trans_app/global/global.dart';
 import 'package:floating_frosted_bottom_bar/app/frosted_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 class DriverHomeScreen extends StatefulWidget
 {
@@ -51,7 +50,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> with SingleTickerPr
               HomeTabPage(),
               EarningsTabPage(),
               RatingsTabPage(),
-              ProfileTabPage(),
+              DriverProfileTabPage(),
             ],
           ),
           child: BottomNavigationBar(

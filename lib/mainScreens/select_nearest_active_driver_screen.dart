@@ -30,18 +30,26 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
         if(dList[index]["car_details"]["type"].toString() == "Elrik-Economy")
           {
             fareAmount = (PassengerAssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!) / 2).toStringAsFixed(2);
+
+            print('THE VEHICLE TYPE IS ELRICK ECONOMY HENCE THE PRICE IS \$ $fareAmount');
           }
         
         if(dList[index]["car_details"]["type"].toString() == "Elrik-Standard")
           {
             fareAmount = (PassengerAssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!)).toStringAsFixed(2);
+
+            print('THE VEHICLE TYPE IS ELRICK STANDARD HENCE THE PRICE IS \$ $fareAmount');
           }
         
         if(dList[index]["car_details"]["type"].toString() == "Elrik-Mbinga")
           {
             fareAmount = (PassengerAssistantMethods.calculateFareAmountFromOriginToDestination(tripDirectionDetailsInfo!) * 2).toStringAsFixed(2);
+
+            print('THE VEHICLE TYPE IS ELRICK MBINGA HENCE THE PRICE IS \$ $fareAmount');
           }
       }
+
+    print('THE TOTAL FARE AMOUNT IS \$ $fareAmount');
     return fareAmount;
   }
 
@@ -58,11 +66,14 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.black,
-            title: const Text(
+            title: Text(
               "Nearest Online Drivers",
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18,
+                color: primaryColor,
               ),
+
           ),
             leading: IconButton(
               icon: const Icon(
@@ -75,7 +86,7 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
                 widget.referenceRideRequest!.remove();
                 Fluttertoast.showToast(msg: "You have cancelled your ride request");
 
-                SystemNavigator.pop();
+                Navigator.pop(context);
               },
             ),
         ),
@@ -136,33 +147,35 @@ class _SelectNearestActiveDriversScreenState extends State<SelectNearestActiveDr
                         ],
                       ),
                       trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             "\$ ${getFareAmountAccordingToVehicleType(index)}",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.redAccent,
+                              fontSize: 12
                             ),
                           ),
-                         const SizedBox(height: 2.0,),
+
                           Text(
                             tripDirectionDetailsInfo != null
-                                ? tripDirectionDetailsInfo!.duration_text!
-                                : "",
+                                ? "${tripDirectionDetailsInfo!.duration_text} mins away"
+                                : "Duration",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
+                              fontSize: 12
                             ),
                           ),
-                          const SizedBox(height: 2.0,),
                           Text(
                             tripDirectionDetailsInfo != null
-                                ? tripDirectionDetailsInfo!.distance_text!
-                                : "",
+                                ? "${tripDirectionDetailsInfo!.distance_text} KM away"
+                                : "Distance",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
+                              fontSize: 12
                             ),
                           ),
                         ],
