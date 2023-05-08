@@ -95,7 +95,7 @@ class _MyDrawerState extends State<MyDrawer>
 
 
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.01,
+            height: MediaQuery.of(context).size.height * 0.005,
           ),
 
           //Visit profile Button
