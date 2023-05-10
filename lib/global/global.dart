@@ -17,7 +17,7 @@ UserModel? userModelCurrentInfo;
 List dList = []; // driverKeyInfo List
 DirectionDetailsInfo? tripDirectionDetailsInfo;
 String? chosenDriverId = "";
-String cloudMessagingServerToken = "key=AAAAwfCH6HE:APA91bFNHn9YlqNeg3hYULNmi2yWmc5UeSE6sk0cBqZQeb3PPQwEghZEDeYaYjxm57zbyI5Ffimy0O3uQdd0AuKFrvIPlWldG9XA9tdFq9MwiZf2_3gb6juxetKvTS-LmXsnrp9QlQja";
+String cloudMessagingServerToken = "key=<YOUR API KEY HERE>";
 LatLng? userDropOffPosition;
 String userDropOffAddress = "";
 String driverCarDetails = "";
